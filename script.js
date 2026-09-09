@@ -822,12 +822,9 @@ function renderBusinesses() {
                 </div>
 
                 <span class="business-badge">
-
-                    <i class="fa-solid fa-flask"></i>
-
-                    Demo Listing
-
-                </span>
+    <i class="fa-solid fa-circle-check"></i>
+    ${business.demo ? "Demo Listing" : "Pending Review"}
+</span>
 
             </div>
 
