@@ -1089,82 +1089,199 @@ if (businessCategory) {
 
 /* ================= ADD BUSINESS FORM ================= */
 
+/* ================= ADD BUSINESS FORM ================= */
+
 const openBusinessForm =
-    document.getElementById(
-        "openBusinessForm"
-    );
+    document.getElementById("openBusinessForm");
 
 const closeBusinessForm =
-    document.getElementById(
-        "closeBusinessForm"
-    );
+    document.getElementById("closeBusinessForm");
 
 const businessForm =
-    document.getElementById(
-        "businessForm"
-    );
+    document.getElementById("businessForm");
 
 const businessListingForm =
-    document.getElementById(
-        "businessListingForm"
-    );
+    document.getElementById("businessListingForm");
 
 
-if (openBusinessForm) {
+/* ================= OPEN FORM ================= */
 
-    openBusinessForm.addEventListener(
-        "click",
-        () => {
+if (openBusinessForm && businessForm) {
 
-            businessForm.style.display =
-                "block";
+    openBusinessForm.addEventListener("click", () => {
 
-            businessForm.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+        businessForm.style.display = "block";
 
-        }
-    );
+        businessForm.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    });
 
 }
 
 
-if (closeBusinessForm) {
+/* ================= CLOSE FORM ================= */
 
-    closeBusinessForm.addEventListener(
-        "click",
-        () => {
+if (closeBusinessForm && businessForm) {
 
-            businessForm.style.display =
-                "none";
+    closeBusinessForm.addEventListener("click", () => {
 
-        }
-    );
+        businessForm.style.display = "none";
+
+    });
 
 }
 
+
+/* ================= SUBMIT BUSINESS ================= */
 
 if (businessListingForm) {
 
-    businessListingForm.addEventListener(
-        "submit",
-        event => {
+    businessListingForm.addEventListener("submit", event => {
 
-            event.preventDefault();
+        event.preventDefault();
 
 
-            showToast(
-                "Thank you! Your business details have been submitted for review."
-            );
+        /* GET FORM DATA */
+
+        const newBusiness = {
+
+            id: Date.now(),
+
+            name:
+                document.getElementById("businessName").value.trim(),
+
+            category:
+                document
+                    .getElementById("businessFormCategory")
+                    .value
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")
+                    .replace("doctor-/-clinic", "clinic")
+                    .replace("computer-services", "computer")
+                    .replace("real-estate", "real-estate"),
+
+            categoryName:
+                document
+                    .getElementById("businessFormCategory")
+                    .value,
+
+            location:
+                document.getElementById("businessAddress").value.trim(),
+
+            description:
+                document
+                    .getElementById("businessDescription").value.trim() ||
+                "Local business listed on Chhatarpur Digital.",
+
+            icon: "fa-solid fa-store",
+
+            demo: false,
+
+            phone:
+                document.getElementById("businessPhone").value.trim(),
+
+            whatsapp:
+                document.getElementById("businessWhatsapp").value.trim(),
+
+            maps:
+                document.getElementById("businessMaps").value.trim(),
+
+            website:
+                document.getElementById("businessWebsite").value.trim(),
+
+            instagram:
+                document.getElementById("businessInstagram").value.trim(),
+
+            owner:
+                document.getElementById("ownerName").value.trim(),
+
+            status: "pending"
+
+        };
 
 
-            businessListingForm.reset();
+        /* ================= SAVE TO LOCAL STORAGE ================= */
 
-        }
-    );
+        const savedBusinesses =
+            JSON.parse(
+                localStorage.getItem("chhatarpurBusinesses")
+            ) || [];
+
+
+        savedBusinesses.push(newBusiness);
+
+
+        localStorage.setItem(
+            "chhatarpurBusinesses",
+            JSON.stringify(savedBusinesses)
+        );
+
+
+        /* ================= ADD TO CURRENT LIST ================= */
+
+        businessData.push(newBusiness);
+
+
+        /* ================= REFRESH DIRECTORY ================= */
+
+        renderBusinesses();
+
+
+        /* ================= SUCCESS MESSAGE ================= */
+
+        showToast(
+            "Business submitted successfully! It is now under review."
+        );
+
+
+        /* ================= RESET FORM ================= */
+
+        businessListingForm.reset();
+
+
+        /* ================= CLOSE FORM ================= */
+
+        setTimeout(() => {
+
+            businessForm.style.display = "none";
+
+        }, 1000);
+
+    });
 
 }
+
+
+/* ================= LOAD SAVED BUSINESSES ================= */
+
+const savedBusinesses =
+    JSON.parse(
+        localStorage.getItem("chhatarpurBusinesses")
+    ) || [];
+
+
+savedBusinesses.forEach(business => {
+
+    const alreadyExists =
+        businessData.some(
+            item => item.id === business.id
+        );
+
+    if (!alreadyExists) {
+
+        businessData.push(business);
+
+    }
+
+});
+
+
+/* ================= UPDATE DIRECTORY ================= */
+
+renderBusinesses();
 
 
 /* ================= ESCAPE ================= */
