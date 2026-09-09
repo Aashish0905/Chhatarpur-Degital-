@@ -1,124 +1,93 @@
-/* =====================================================
-   AASHISH DIGITAL MARKETING WEBSITE
-   FINAL V1.0 JAVASCRIPT
-===================================================== */
+
+// =====================================================
+// AASHISH DIGITAL - MAIN JAVASCRIPT
+// =====================================================
 
 
-/* ================= ELEMENTS ================= */
+// =====================================================
+// BASIC DOM ELEMENTS
+// =====================================================
 
 const header = document.getElementById("header");
 const menuBtn = document.getElementById("menuBtn");
 const nav = document.getElementById("nav");
-
 const navLinks = document.querySelectorAll(".nav-link");
 
-const modal = document.getElementById("serviceModal");
-const modalOverlay = document.getElementById("modalOverlay");
-const modalClose = document.getElementById("modalClose");
 
-const modalIcon = document.getElementById("modalIcon");
-const modalLabel = document.getElementById("modalLabel");
-const modalTitle = document.getElementById("modalTitle");
-const modalDescription = document.getElementById("modalDescription");
-const modalList = document.getElementById("modalList");
-const modalPrice = document.getElementById("modalPrice");
+// =====================================================
+// CURRENT YEAR
+// =====================================================
 
-const toast = document.getElementById("toast");
-const toastMessage = document.getElementById("toastMessage");
+const yearElement = document.getElementById("year");
 
-const year = document.getElementById("year");
-
-
-/* ================= CURRENT YEAR ================= */
-
-if (year) {
-    year.textContent = new Date().getFullYear();
+if (yearElement) {
+    yearElement.textContent = new Date().getFullYear();
 }
 
 
-/* ================= MOBILE MENU ================= */
+// =====================================================
+// MOBILE MENU
+// =====================================================
 
-menuBtn.addEventListener("click", () => {
+if (menuBtn && nav) {
 
-    nav.classList.toggle("open");
+    menuBtn.addEventListener("click", () => {
+        nav.classList.toggle("active");
+        menuBtn.classList.toggle("active");
+    });
 
-    const icon = menuBtn.querySelector("i");
+    navLinks.forEach(link => {
 
-    if (nav.classList.contains("open")) {
-
-        icon.classList.remove("fa-bars");
-        icon.classList.add("fa-xmark");
-
-    } else {
-
-        icon.classList.remove("fa-xmark");
-        icon.classList.add("fa-bars");
-
-    }
-
-});
-
-
-/* ================= CLOSE MOBILE MENU ================= */
-
-navLinks.forEach(link => {
-
-    link.addEventListener("click", () => {
-
-        nav.classList.remove("open");
-
-        const icon = menuBtn.querySelector("i");
-
-        icon.classList.remove("fa-xmark");
-        icon.classList.add("fa-bars");
+        link.addEventListener("click", () => {
+            nav.classList.remove("active");
+            menuBtn.classList.remove("active");
+        });
 
     });
 
-});
+}
 
 
-/* ================= HEADER SCROLL ================= */
+// =====================================================
+// HEADER SCROLL EFFECT
+// =====================================================
 
 window.addEventListener("scroll", () => {
 
-    if (window.scrollY > 30) {
+    if (!header) return;
 
+    if (window.scrollY > 50) {
         header.classList.add("scrolled");
-
     } else {
-
         header.classList.remove("scrolled");
-
     }
 
 });
 
 
-/* ================= ACTIVE NAV ================= */
+// =====================================================
+// ACTIVE NAVIGATION
+// =====================================================
 
 const sections = document.querySelectorAll("section[id]");
 
-window.addEventListener("scroll", () => {
+function updateActiveNav() {
 
     let currentSection = "";
 
     sections.forEach(section => {
 
         const sectionTop = section.offsetTop - 150;
-
         const sectionHeight = section.offsetHeight;
 
         if (
             window.scrollY >= sectionTop &&
             window.scrollY < sectionTop + sectionHeight
         ) {
-
             currentSection = section.getAttribute("id");
-
         }
 
     });
-
 
     navLinks.forEach(link => {
 
@@ -127,323 +96,28 @@ window.addEventListener("scroll", () => {
         const href = link.getAttribute("href");
 
         if (href === `#${currentSection}`) {
-
             link.classList.add("active");
-
         }
 
     });
 
-});
-
-
-/* =====================================================
-   SERVICE DATA
-===================================================== */
-
-const services = {
-
-    seo: {
-
-        icon: "fa-solid fa-magnifying-glass-chart",
-
-        label: "SEARCH ENGINE OPTIMIZATION",
-
-        title: "SEO",
-
-        description:
-            "Improve your website's search visibility with a practical SEO foundation focused on your business and target audience.",
-
-        price:
-            "Starting from ₹2,999",
-
-        points: [
-
-            "Website SEO audit",
-
-            "Basic keyword research",
-
-            "On-page SEO improvements",
-
-            "Meta title and description setup",
-
-            "Basic SEO recommendations"
-
-        ]
-
-    },
-
-
-    social: {
-
-        icon: "fa-brands fa-instagram",
-
-        label: "SOCIAL MEDIA",
-
-        title: "Social Media Marketing",
-
-        description:
-            "Create a more professional and consistent social media presence for your business.",
-
-        price:
-            "Starting from ₹2,499",
-
-        points: [
-
-            "Social media profile review",
-
-            "Content direction",
-
-            "Posting strategy",
-
-            "Basic content planning",
-
-            "Growth recommendations"
-
-        ]
-
-    },
-
-
-    ads: {
-
-        icon: "fa-solid fa-bullhorn",
-
-        label: "PAID ADVERTISING",
-
-        title: "Google Ads",
-
-        description:
-            "Set up and structure advertising campaigns to help your business reach relevant potential customers.",
-
-        price:
-            "Starting from ₹3,999",
-
-        points: [
-
-            "Campaign planning",
-
-            "Keyword research",
-
-            "Ad structure",
-
-            "Conversion-focused landing page guidance",
-
-            "Campaign recommendations"
-
-        ]
-
-    },
-
-
-    website: {
-
-        icon: "fa-solid fa-laptop-code",
-
-        label: "WEB DEVELOPMENT",
-
-        title: "Website Development",
-
-        description:
-            "Modern responsive websites designed to give your business a professional online presence.",
-
-        price:
-            "Starting from ₹5,999",
-
-        points: [
-
-            "Responsive design",
-
-            "Modern UI",
-
-            "Mobile optimization",
-
-            "Contact / WhatsApp integration",
-
-            "Basic SEO structure"
-
-        ]
-
-    },
-
-
-    local: {
-
-        icon: "fa-solid fa-store",
-
-        label: "LOCAL BUSINESS",
-
-        title: "Local Business Setup",
-
-        description:
-            "Build a stronger digital presence for a local business and make it easier for customers to find you online.",
-
-        price:
-            "Starting from ₹1,999",
-
-        points: [
-
-            "Online presence planning",
-
-            "Business profile guidance",
-
-            "Contact information setup",
-
-            "Social profile optimization",
-
-            "Local visibility recommendations"
-
-        ]
-
-    },
-
-
-    complete: {
-
-        icon: "fa-solid fa-layer-group",
-
-        label: "COMPLETE DIGITAL SOLUTION",
-
-        title: "Complete Digital Package",
-
-        description:
-            "A combination of website and digital marketing services designed around your business requirements.",
-
-        price:
-            "Starting from ₹9,999",
-
-        points: [
-
-            "Modern business website",
-
-            "SEO foundation",
-
-            "Social media strategy",
-
-            "Digital marketing planning",
-
-            "Growth consultation"
-
-        ]
-
-    }
-
-};
-
-
-/* =====================================================
-   OPEN SERVICE MODAL
-===================================================== */
-
-const detailButtons = document.querySelectorAll(".details-btn");
-
-detailButtons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        const serviceName = button.dataset.service;
-
-        const service = services[serviceName];
-
-        if (!service) return;
-
-
-        modalIcon.innerHTML =
-            `<i class="${service.icon}"></i>`;
-
-        modalLabel.textContent =
-            service.label;
-
-        modalTitle.textContent =
-            service.title;
-
-        modalDescription.textContent =
-            service.description;
-
-        modalPrice.textContent =
-            service.price;
-
-
-        modalList.innerHTML = "";
-
-
-        service.points.forEach(point => {
-
-            const li = document.createElement("li");
-
-            li.innerHTML =
-                `<i class="fa-solid fa-check"></i>
-                 <span>${point}</span>`;
-
-            modalList.appendChild(li);
-
-        });
-
-
-        modal.classList.add("active");
-
-        document.body.classList.add("modal-open");
-
-    });
-
-});
-
-
-/* ================= CLOSE MODAL ================= */
-
-function closeModal() {
-
-    modal.classList.remove("active");
-
-    document.body.classList.remove("modal-open");
-
 }
 
-modalClose.addEventListener("click", closeModal);
-
-modalOverlay.addEventListener("click", closeModal);
+window.addEventListener("scroll", updateActiveNav);
 
 
-/* ================= ESCAPE KEY ================= */
+// =====================================================
+// TOAST
+// =====================================================
 
-document.addEventListener("keydown", event => {
-
-    if (event.key === "Escape") {
-
-        closeModal();
-
-    }
-
-});
-
-
-/* =====================================================
-   PROJECT LINKS
-===================================================== */
-
-const projectLinks = document.querySelectorAll(".coming-soon");
-
-projectLinks.forEach(link => {
-
-    link.addEventListener("click", event => {
-
-        event.preventDefault();
-
-        showToast(
-            "Project link will be added here soon."
-        );
-
-    });
-
-});
-
-
-/* ================= TOAST ================= */
+const toast = document.getElementById("toast");
+const toastMessage = document.getElementById("toastMessage");
 
 let toastTimer;
 
-
 function showToast(message) {
+
+    if (!toast || !toastMessage) return;
 
     toastMessage.textContent = message;
 
@@ -452,30 +126,225 @@ function showToast(message) {
     clearTimeout(toastTimer);
 
     toastTimer = setTimeout(() => {
-
         toast.classList.remove("show");
-
     }, 3000);
 
 }
 
 
-/* =====================================================
-   SMOOTH SCROLL
-===================================================== */
+// =====================================================
+// SERVICE MODAL
+// =====================================================
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+const serviceModal = document.getElementById("serviceModal");
+const modalIcon = document.getElementById("modalIcon");
+const modalLabel = document.getElementById("modalLabel");
+const modalTitle = document.getElementById("modalTitle");
+const modalDescription = document.getElementById("modalDescription");
+const modalList = document.getElementById("modalList");
+const modalPrice = document.getElementById("modalPrice");
+const serviceModalClose = document.getElementById("serviceModalClose");
+const serviceModalOverlay = document.getElementById("serviceModalOverlay");
 
-    anchor.addEventListener("click", function (event) {
 
-        const targetId = this.getAttribute("href");
+const services = {
 
-        if (
-            targetId === "#" ||
-            targetId === ""
-        ) {
-            return;
+    seo: {
+        icon: "fa-solid fa-chart-line",
+        label: "SEARCH ENGINE OPTIMIZATION",
+        title: "SEO Services",
+        description:
+            "Improve your Google visibility and attract more customers through search engine optimization.",
+        list: [
+            "Google Business Profile optimization",
+            "Local SEO",
+            "Keyword optimization",
+            "On-page SEO",
+            "Basic technical SEO"
+        ],
+        price: "Starting ₹2,999"
+    },
+
+    social: {
+        icon: "fa-brands fa-instagram",
+        label: "SOCIAL MEDIA MARKETING",
+        title: "Social Media Marketing",
+        description:
+            "Build a professional social media presence and reach more customers online.",
+        list: [
+            "Instagram & Facebook strategy",
+            "Content planning",
+            "Post design guidance",
+            "Audience growth strategy",
+            "Monthly content ideas"
+        ],
+        price: "Starting ₹2,499"
+    },
+
+    ads: {
+        icon: "fa-solid fa-bullhorn",
+        label: "PAID ADVERTISING",
+        title: "Google Ads",
+        description:
+            "Reach customers who are actively searching for your products or services.",
+        list: [
+            "Google Search Ads",
+            "Campaign setup",
+            "Keyword research",
+            "Ad copy",
+            "Basic campaign optimization"
+        ],
+        price: "Starting ₹3,999"
+    },
+
+    website: {
+        icon: "fa-solid fa-laptop-code",
+        label: "WEB DEVELOPMENT",
+        title: "Business Website",
+        description:
+            "Get a modern, responsive and professional website for your business.",
+        list: [
+            "Responsive design",
+            "Mobile friendly layout",
+            "WhatsApp integration",
+            "Contact section",
+            "Basic SEO setup"
+        ],
+        price: "Starting ₹5,999"
+    },
+
+    local: {
+        icon: "fa-solid fa-location-dot",
+        label: "LOCAL BUSINESS",
+        title: "Local Business Setup",
+        description:
+            "Make your local business easier to discover on Google and online platforms.",
+        list: [
+            "Google Business Profile guidance",
+            "Local listing setup",
+            "Business information optimization",
+            "WhatsApp CTA",
+            "Basic local SEO"
+        ],
+        price: "Starting ₹1,999"
+    },
+
+    complete: {
+        icon: "fa-solid fa-layer-group",
+        label: "COMPLETE DIGITAL PACKAGE",
+        title: "Complete Digital Growth",
+        description:
+            "A complete package for businesses that want a website, marketing and local online presence.",
+        list: [
+            "Professional website",
+            "SEO setup",
+            "Social media strategy",
+            "Google Ads setup",
+            "Local business setup"
+        ],
+        price: "Starting ₹9,999"
+    }
+
+};
+
+
+// OPEN SERVICE MODAL
+
+document.querySelectorAll(".service-details").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        const serviceKey = button.dataset.service;
+        const service = services[serviceKey];
+
+        if (!service) return;
+
+        if (modalIcon) {
+            modalIcon.innerHTML = `<i class="${service.icon}"></i>`;
         }
+
+        if (modalLabel) {
+            modalLabel.textContent = service.label;
+        }
+
+        if (modalTitle) {
+            modalTitle.textContent = service.title;
+        }
+
+        if (modalDescription) {
+            modalDescription.textContent = service.description;
+        }
+
+        if (modalList) {
+
+            modalList.innerHTML = service.list
+                .map(item => `<li><i class="fa-solid fa-check"></i>${item}</li>`)
+                .join("");
+
+        }
+
+        if (modalPrice) {
+            modalPrice.textContent = service.price;
+        }
+
+        if (serviceModal) {
+            serviceModal.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+
+    });
+
+});
+
+
+// CLOSE SERVICE MODAL
+
+function closeServiceModal() {
+
+    if (!serviceModal) return;
+
+    serviceModal.classList.remove("active");
+    document.body.style.overflow = "";
+
+}
+
+if (serviceModalClose) {
+    serviceModalClose.addEventListener("click", closeServiceModal);
+}
+
+if (serviceModalOverlay) {
+    serviceModalOverlay.addEventListener("click", closeServiceModal);
+}
+
+
+// =====================================================
+// PROJECT COMING SOON
+// =====================================================
+
+document.querySelectorAll(".coming-soon").forEach(link => {
+
+    link.addEventListener("click", event => {
+
+        event.preventDefault();
+
+        showToast("This project demo is coming soon.");
+
+    });
+
+});
+
+
+// =====================================================
+// SMOOTH SCROLL
+// =====================================================
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+
+    link.addEventListener("click", event => {
+
+        const targetId = link.getAttribute("href");
+
+        if (!targetId || targetId === "#") return;
 
         const target = document.querySelector(targetId);
 
@@ -493,55 +362,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 
-/* =====================================================
-   BUTTON MICRO INTERACTION
-===================================================== */
-
-const buttons = document.querySelectorAll(".btn");
-
-buttons.forEach(button => {
-
-    button.addEventListener("mouseenter", () => {
-
-        button.style.setProperty(
-            "--button-scale",
-            "1.01"
-        );
-
-    });
-
-    button.addEventListener("mouseleave", () => {
-
-        button.style.setProperty(
-            "--button-scale",
-            "1"
-        );
-
-    });
-
-});
-
-
-/* =====================================================
-   CONSOLE MESSAGE
-===================================================== */
-
-console.log(
-    "Aashish Digital Marketing Website — FINAL V1.0"
-);
-
-console.log(
-    "HTML + CSS + JavaScript successfully loaded."
-);
-
-
-
-/* =====================================================
-   BUSINESS DIRECTORY
-===================================================== */
-
-
-/* ================= BUSINESS DATA ================= */
+// =====================================================
+// BUSINESS DIRECTORY DATA
+// =====================================================
 
 const businessData = [
 
@@ -552,14 +375,10 @@ const businessData = [
         categoryName: "Restaurant",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local restaurant and food business.",
+            "Fresh food, snacks and beverages for families and friends.",
         icon: "fa-solid fa-utensils",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     },
-
 
     {
         id: 2,
@@ -568,14 +387,10 @@ const businessData = [
         categoryName: "Salon",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local salon and beauty service.",
+            "Modern haircut, grooming and beauty services.",
         icon: "fa-solid fa-scissors",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     },
-
 
     {
         id: 3,
@@ -584,14 +399,10 @@ const businessData = [
         categoryName: "Computer Services",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for computer, laptop and digital services.",
+            "Computer repair, accessories and digital services.",
         icon: "fa-solid fa-computer",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     },
-
 
     {
         id: 4,
@@ -600,14 +411,10 @@ const businessData = [
         categoryName: "Doctor / Clinic",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local healthcare service.",
+            "Healthcare and general consultation services.",
         icon: "fa-solid fa-user-doctor",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     },
-
 
     {
         id: 5,
@@ -616,14 +423,10 @@ const businessData = [
         categoryName: "Real Estate",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for local property buying, selling and rental services.",
-        icon: "fa-solid fa-house",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+            "Property buying, selling and rental assistance.",
+        icon: "fa-solid fa-building",
+        demo: true
     },
-
 
     {
         id: 6,
@@ -632,14 +435,10 @@ const businessData = [
         categoryName: "Shop",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local retail store.",
-        icon: "fa-solid fa-store",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+            "Local shopping destination for daily-use products.",
+        icon: "fa-solid fa-shop",
+        demo: true
     },
-
 
     {
         id: 7,
@@ -648,14 +447,10 @@ const businessData = [
         categoryName: "Lawyer",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local legal service.",
+            "Legal consultation and professional legal services.",
         icon: "fa-solid fa-scale-balanced",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     },
-
 
     {
         id: 8,
@@ -664,14 +459,10 @@ const businessData = [
         categoryName: "Coaching",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local coaching institute.",
+            "Academic coaching and competitive exam preparation.",
         icon: "fa-solid fa-graduation-cap",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     },
-
 
     {
         id: 9,
@@ -680,107 +471,80 @@ const businessData = [
         categoryName: "Hotel",
         location: "Chhatarpur, Madhya Pradesh",
         description:
-            "Demo listing for a local hotel and accommodation service.",
+            "Comfortable rooms and hospitality services.",
         icon: "fa-solid fa-hotel",
-        demo: true,
-        phone: "",
-        whatsapp: "",
-        maps: ""
+        demo: true
     }
 
 ];
 
 
-/* ================= ELEMENTS ================= */
+// =====================================================
+// BUSINESS DIRECTORY ELEMENTS
+// =====================================================
 
-const businessGrid =
-    document.getElementById("businessGrid");
-
-const businessSearch =
-    document.getElementById("businessSearch");
-
-const businessCategory =
-    document.getElementById("businessCategory");
-
-const businessEmpty =
-    document.getElementById("businessEmpty");
+const businessGrid = document.getElementById("businessGrid");
+const businessSearch = document.getElementById("businessSearch");
+const businessCategory = document.getElementById("businessCategory");
+const businessEmpty = document.getElementById("businessEmpty");
 
 
-/* ================= ICON ================= */
+// =====================================================
+// BUSINESS ICON
+// =====================================================
 
 function getBusinessIcon(category) {
 
     const icons = {
 
         restaurant: "fa-solid fa-utensils",
-
         hotel: "fa-solid fa-hotel",
-
-        shop: "fa-solid fa-store",
-
+        shop: "fa-solid fa-shop",
         clinic: "fa-solid fa-user-doctor",
-
         lawyer: "fa-solid fa-scale-balanced",
-
         coaching: "fa-solid fa-graduation-cap",
-
-        "real-estate": "fa-solid fa-house",
-
+        "real-estate": "fa-solid fa-building",
         salon: "fa-solid fa-scissors",
-
         computer: "fa-solid fa-computer"
 
     };
 
-    return icons[category] ||
-        "fa-solid fa-store";
+    return icons[category] || "fa-solid fa-store";
 
 }
 
 
-/* ================= RENDER BUSINESSES ================= */
+// =====================================================
+// RENDER BUSINESSES
+// =====================================================
 
 function renderBusinesses() {
 
     if (!businessGrid) return;
 
+    const searchValue = businessSearch
+        ? businessSearch.value.trim().toLowerCase()
+        : "";
 
-    const searchTerm =
-        businessSearch.value
-            .trim()
-            .toLowerCase();
-
-
-    const selectedCategory =
-        businessCategory.value;
+    const categoryValue = businessCategory
+        ? businessCategory.value
+        : "all";
 
 
-    const filteredBusinesses =
-        businessData.filter(business => {
+    const filteredBusinesses = businessData.filter(business => {
 
-            const matchesSearch =
-                business.name
-                    .toLowerCase()
-                    .includes(searchTerm) ||
+        const matchesSearch =
+            business.name.toLowerCase().includes(searchValue) ||
+            business.categoryName.toLowerCase().includes(searchValue) ||
+            business.location.toLowerCase().includes(searchValue);
 
-                business.categoryName
-                    .toLowerCase()
-                    .includes(searchTerm) ||
+        const matchesCategory =
+            categoryValue === "all" ||
+            business.category === categoryValue;
 
-                business.location
-                    .toLowerCase()
-                    .includes(searchTerm);
+        return matchesSearch && matchesCategory;
 
-
-            const matchesCategory =
-                selectedCategory === "all" ||
-                business.category === selectedCategory;
-
-
-            return matchesSearch &&
-                matchesCategory;
-
-        });
+    });
 
 
     businessGrid.innerHTML = "";
@@ -788,94 +552,80 @@ function renderBusinesses() {
 
     if (filteredBusinesses.length === 0) {
 
-        businessEmpty.style.display =
-            "block";
+        if (businessEmpty) {
+            businessEmpty.style.display = "block";
+        }
 
         return;
 
     }
 
 
-    businessEmpty.style.display =
-        "none";
+    if (businessEmpty) {
+        businessEmpty.style.display = "none";
+    }
 
 
     filteredBusinesses.forEach(business => {
 
-        const card =
-            document.createElement("article");
+        const icon = business.icon || getBusinessIcon(business.category);
 
-        card.className =
-            "business-card";
+        const card = document.createElement("article");
+
+        card.className = "business-card";
+
+        card.dataset.id = business.id;
 
 
         card.innerHTML = `
 
             <div class="business-card-top">
 
-                <div class="business-card-icon">
-
-                    <i class="${getBusinessIcon(
-                        business.category
-                    )}"></i>
-
+                <div class="business-icon">
+                    <i class="${icon}"></i>
                 </div>
 
                 <span class="business-badge">
-    <i class="fa-solid fa-circle-check"></i>
-    ${business.demo ? "Demo Listing" : "Pending Review"}
-</span>
 
-            </div>
+                    <i class="fa-solid fa-circle-check"></i>
 
+                    ${business.demo ? "Demo Listing" : "Pending Review"}
 
-            <div class="business-category">
-
-                ${business.categoryName}
-
-            </div>
-
-
-            <h3>
-
-                ${business.name}
-
-            </h3>
-
-
-            <div class="business-location">
-
-                <i class="fa-solid fa-location-dot"></i>
-
-                <span>
-                    ${business.location}
                 </span>
 
             </div>
 
 
-            <p class="business-description">
+            <div class="business-card-content">
 
-                ${business.description}
+                <span class="business-category">
+                    ${business.categoryName}
+                </span>
 
-            </p>
+                <h3>
+                    ${business.name}
+                </h3>
 
+                <p class="business-location">
+                    <i class="fa-solid fa-location-dot"></i>
+                    ${business.location}
+                </p>
 
-            <div class="business-actions">
-
-                <button
-                    class="business-action primary"
-                    type="button"
-                    data-business-id="${business.id}"
-                >
-
-                    <i class="fa-solid fa-eye"></i>
-
-                    Details
-
-                </button>
+                <p class="business-description">
+                    ${business.description}
+                </p>
 
             </div>
+
+
+            <button
+                type="button"
+                class="business-view-btn"
+                data-business-id="${business.id}"
+            >
+                View Details
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
 
         `;
 
@@ -890,152 +640,351 @@ function renderBusinesses() {
 }
 
 
-/* ================= DETAILS ================= */
+// =====================================================
+// BUSINESS DETAILS BUTTONS
+// =====================================================
 
 function attachBusinessDetails() {
 
-    const detailButtons =
-        document.querySelectorAll(
-            "[data-business-id]"
-        );
+    document.querySelectorAll(".business-view-btn").forEach(button => {
 
+        button.addEventListener("click", () => {
 
-    detailButtons.forEach(button => {
+            const businessId = button.dataset.businessId;
 
-        button.addEventListener(
-            "click",
-            () => {
+            const business = businessData.find(
+                item => String(item.id) === String(businessId)
+            );
 
-                const businessId =
-                    Number(
-                        button.dataset.businessId
-                    );
+            if (!business) return;
 
+            openBusinessModal(business);
 
-                const business =
-                    businessData.find(
-                        item =>
-                            item.id === businessId
-                    );
-
-
-                if (!business) return;
-
-
-                openBusinessModal(
-                    business
-                );
-
-            }
-        );
+        });
 
     });
 
 }
 
 
-/* ================= BUSINESS MODAL ================= */
+// =====================================================
+// BUSINESS MODAL
+// =====================================================
 
-const businessModal =
-    document.getElementById(
-        "businessModal"
-    );
+const businessModal = document.getElementById("businessModal");
+const businessModalOverlay = document.getElementById("businessModalOverlay");
+const businessModalClose = document.getElementById("businessModalClose");
 
-const businessModalOverlay =
-    document.getElementById(
-        "businessModalOverlay"
-    );
-
-const businessModalClose =
-    document.getElementById(
-        "businessModalClose"
-    );
-
-const businessModalIcon =
-    document.getElementById(
-        "businessModalIcon"
-    );
-
-const businessModalCategory =
-    document.getElementById(
-        "businessModalCategory"
-    );
-
-const businessModalTitle =
-    document.getElementById(
-        "businessModalTitle"
-    );
-
-const businessModalLocation =
-    document.getElementById(
-        "businessModalLocation"
-    );
-
-const businessModalDescription =
-    document.getElementById(
-        "businessModalDescription"
-    );
-
-const businessModalActions =
-    document.getElementById(
-        "businessModalActions"
-    );
+const businessModalIcon = document.getElementById("businessModalIcon");
+const businessModalCategory = document.getElementById("businessModalCategory");
+const businessModalTitle = document.getElementById("businessModalTitle");
+const businessModalLocation = document.getElementById("businessModalLocation");
+const businessModalDescription = document.getElementById("businessModalDescription");
+const businessModalActions = document.getElementById("businessModalActions");
 
 
-function openBusinessModal(business) {
+// =====================================================
+// SAFE URL HELPER
+// =====================================================
 
-    businessModalIcon.innerHTML =
-        `<i class="${getBusinessIcon(
-            business.category
-        )}"></i>`;
+function safeUrl(url) {
 
+    if (!url) return "";
 
-    businessModalCategory.textContent =
-        business.categoryName;
+    const trimmed = String(url).trim();
 
+    if (
+        trimmed.startsWith("https://") ||
+        trimmed.startsWith("http://")
+    ) {
+        return trimmed;
+    }
 
-    businessModalTitle.textContent =
-        business.name;
-
-
-    businessModalLocation.innerHTML =
-        `<i class="fa-solid fa-location-dot"></i>
-         ${business.location}`;
-
-
-    businessModalDescription.textContent =
-        business.description;
-
-
-    businessModalActions.innerHTML = `
-
-        <button
-            class="business-action primary"
-            type="button"
-            onclick="showToast('This is a demo business listing.')"
-        >
-
-            <i class="fa-solid fa-circle-info"></i>
-
-            Demo Listing
-
-        </button>
-
-    `;
-
-
-    businessModal.classList.add(
-        "active"
-    );
+    return `https://${trimmed}`;
 
 }
 
 
+// =====================================================
+// WHATSAPP NUMBER HELPER
+// =====================================================
+
+function getWhatsAppNumber(number) {
+
+    if (!number) return "";
+
+    let value = String(number).replace(/\D/g, "");
+
+    // India 10 digit number
+    if (value.length === 10) {
+        value = "91" + value;
+    }
+
+    return value;
+
+}
+
+
+// =====================================================
+// OPEN BUSINESS MODAL
+// =====================================================
+
+function openBusinessModal(business) {
+
+    if (!businessModal) return;
+
+
+    const icon =
+        business.icon ||
+        getBusinessIcon(business.category);
+
+
+    if (businessModalIcon) {
+
+        businessModalIcon.innerHTML =
+            `<i class="${icon}"></i>`;
+
+    }
+
+
+    if (businessModalCategory) {
+
+        businessModalCategory.textContent =
+            business.categoryName || "Business";
+
+    }
+
+
+    if (businessModalTitle) {
+
+        businessModalTitle.textContent =
+            business.name || "Business";
+
+    }
+
+
+    if (businessModalLocation) {
+
+        businessModalLocation.innerHTML = `
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            ${business.location || "Chhatarpur"}
+
+        `;
+
+    }
+
+
+    if (businessModalDescription) {
+
+        businessModalDescription.textContent =
+            business.description ||
+            "Business information is currently available on Chhatarpur Digital.";
+
+    }
+
+
+    if (businessModalActions) {
+
+        businessModalActions.innerHTML = "";
+
+
+        // CALL
+        if (business.phone) {
+
+            const callButton = document.createElement("a");
+
+            callButton.className = "business-action primary";
+
+            callButton.href =
+                `tel:${String(business.phone).replace(/\s/g, "")}`;
+
+            callButton.innerHTML = `
+                <i class="fa-solid fa-phone"></i>
+                Call
+            `;
+
+            businessModalActions.appendChild(callButton);
+
+        }
+
+
+        // WHATSAPP
+        if (business.whatsapp) {
+
+            const whatsappNumber =
+                getWhatsAppNumber(business.whatsapp);
+
+            if (whatsappNumber) {
+
+                const whatsappButton =
+                    document.createElement("a");
+
+                whatsappButton.className =
+                    "business-action";
+
+                whatsappButton.href =
+                    `https://wa.me/${whatsappNumber}`;
+
+                whatsappButton.target = "_blank";
+                whatsappButton.rel = "noopener noreferrer";
+
+                whatsappButton.innerHTML = `
+                    <i class="fa-brands fa-whatsapp"></i>
+                    WhatsApp
+                `;
+
+                businessModalActions.appendChild(
+                    whatsappButton
+                );
+
+            }
+
+        }
+
+
+        // GOOGLE MAPS
+        if (business.maps) {
+
+            const mapsButton =
+                document.createElement("a");
+
+            mapsButton.className =
+                "business-action";
+
+            mapsButton.href =
+                safeUrl(business.maps);
+
+            mapsButton.target = "_blank";
+            mapsButton.rel = "noopener noreferrer";
+
+            mapsButton.innerHTML = `
+                <i class="fa-solid fa-location-dot"></i>
+                Google Maps
+            `;
+
+            businessModalActions.appendChild(
+                mapsButton
+            );
+
+        }
+
+
+        // WEBSITE
+        if (business.website) {
+
+            const websiteButton =
+                document.createElement("a");
+
+            websiteButton.className =
+                "business-action";
+
+            websiteButton.href =
+                safeUrl(business.website);
+
+            websiteButton.target = "_blank";
+            websiteButton.rel = "noopener noreferrer";
+
+            websiteButton.innerHTML = `
+                <i class="fa-solid fa-globe"></i>
+                Website
+            `;
+
+            businessModalActions.appendChild(
+                websiteButton
+            );
+
+        }
+
+
+        // INSTAGRAM
+        if (business.instagram) {
+
+            const instagramButton =
+                document.createElement("a");
+
+            instagramButton.className =
+                "business-action";
+
+            instagramButton.href =
+                safeUrl(business.instagram);
+
+            instagramButton.target = "_blank";
+            instagramButton.rel = "noopener noreferrer";
+
+            instagramButton.innerHTML = `
+                <i class="fa-brands fa-instagram"></i>
+                Instagram
+            `;
+
+            businessModalActions.appendChild(
+                instagramButton
+            );
+
+        }
+
+
+        // IF NO ACTIONS
+        if (!businessModalActions.children.length) {
+
+            const pendingButton =
+                document.createElement("button");
+
+            pendingButton.className =
+                "business-action";
+
+            pendingButton.type = "button";
+
+            pendingButton.innerHTML = `
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                ${
+                    business.demo
+                        ? "Demo Listing"
+                        : "Pending Review"
+                }
+
+            `;
+
+            pendingButton.addEventListener("click", () => {
+
+                showToast(
+                    business.demo
+                        ? "This is a demo business listing."
+                        : "This business listing is under review."
+                );
+
+            });
+
+            businessModalActions.appendChild(
+                pendingButton
+            );
+
+        }
+
+    }
+
+
+    businessModal.classList.add("active");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+// =====================================================
+// CLOSE BUSINESS MODAL
+// =====================================================
+
 function closeBusinessModal() {
 
-    businessModal.classList.remove(
-        "active"
-    );
+    if (!businessModal) return;
+
+    businessModal.classList.remove("active");
+
+    document.body.style.overflow = "";
 
 }
 
@@ -1060,7 +1009,9 @@ if (businessModalOverlay) {
 }
 
 
-/* ================= SEARCH ================= */
+// =====================================================
+// BUSINESS SEARCH
+// =====================================================
 
 if (businessSearch) {
 
@@ -1072,7 +1023,9 @@ if (businessSearch) {
 }
 
 
-/* ================= CATEGORY ================= */
+// =====================================================
+// BUSINESS CATEGORY FILTER
+// =====================================================
 
 if (businessCategory) {
 
@@ -1084,9 +1037,9 @@ if (businessCategory) {
 }
 
 
-/* ================= ADD BUSINESS FORM ================= */
-
-/* ================= ADD BUSINESS FORM ================= */
+// =====================================================
+// ADD BUSINESS FORM
+// =====================================================
 
 const openBusinessForm =
     document.getElementById("openBusinessForm");
@@ -1101,7 +1054,7 @@ const businessListingForm =
     document.getElementById("businessListingForm");
 
 
-/* ================= OPEN FORM ================= */
+// OPEN FORM
 
 if (openBusinessForm && businessForm) {
 
@@ -1111,7 +1064,7 @@ if (openBusinessForm && businessForm) {
 
         businessForm.scrollIntoView({
             behavior: "smooth",
-            block: "start"
+            block: "center"
         });
 
     });
@@ -1119,7 +1072,7 @@ if (openBusinessForm && businessForm) {
 }
 
 
-/* ================= CLOSE FORM ================= */
+// CLOSE FORM
 
 if (closeBusinessForm && businessForm) {
 
@@ -1132,177 +1085,277 @@ if (closeBusinessForm && businessForm) {
 }
 
 
-/* ================= SUBMIT BUSINESS ================= */
+// =====================================================
+// SUBMIT BUSINESS
+// =====================================================
 
 if (businessListingForm) {
 
-    businessListingForm.addEventListener("submit", event => {
+    businessListingForm.addEventListener(
+        "submit",
+        event => {
 
-        event.preventDefault();
+            event.preventDefault();
 
 
-        /* GET FORM DATA */
+            const businessName =
+                document.getElementById("businessName");
 
-        const newBusiness = {
+            const businessFormCategory =
+                document.getElementById("businessFormCategory");
 
-            id: Date.now(),
+            const ownerName =
+                document.getElementById("ownerName");
 
-            name:
-                document.getElementById("businessName").value.trim(),
+            const businessPhone =
+                document.getElementById("businessPhone");
 
-            category:
-                document
-                    .getElementById("businessFormCategory")
-                    .value
+            const businessWhatsapp =
+                document.getElementById("businessWhatsapp");
+
+            const businessMaps =
+                document.getElementById("businessMaps");
+
+            const businessWebsite =
+                document.getElementById("businessWebsite");
+
+            const businessInstagram =
+                document.getElementById("businessInstagram");
+
+            const businessAddress =
+                document.getElementById("businessAddress");
+
+            const businessDescription =
+                document.getElementById("businessDescription");
+
+
+            const categoryName =
+                businessFormCategory.value;
+
+
+            let category =
+                categoryName
                     .toLowerCase()
-                    .replace(/\s+/g, "-")
-                    .replace("doctor-/-clinic", "clinic")
-                    .replace("computer-services", "computer")
-                    .replace("real-estate", "real-estate"),
-
-            categoryName:
-                document
-                    .getElementById("businessFormCategory")
-                    .value,
-
-            location:
-                document.getElementById("businessAddress").value.trim(),
-
-            description:
-                document
-                    .getElementById("businessDescription").value.trim() ||
-                "Local business listed on Chhatarpur Digital.",
-
-            icon: "fa-solid fa-store",
-
-            demo: false,
-
-            phone:
-                document.getElementById("businessPhone").value.trim(),
-
-            whatsapp:
-                document.getElementById("businessWhatsapp").value.trim(),
-
-            maps:
-                document.getElementById("businessMaps").value.trim(),
-
-            website:
-                document.getElementById("businessWebsite").value.trim(),
-
-            instagram:
-                document.getElementById("businessInstagram").value.trim(),
-
-            owner:
-                document.getElementById("ownerName").value.trim(),
-
-            status: "pending"
-
-        };
+                    .replace(/\s+/g, "-");
 
 
-        /* ================= SAVE TO LOCAL STORAGE ================= */
+            if (category === "doctor-/-clinic") {
+                category = "clinic";
+            }
 
-        const savedBusinesses =
-            JSON.parse(
-                localStorage.getItem("chhatarpurBusinesses")
-            ) || [];
-
-
-        savedBusinesses.push(newBusiness);
+            if (category === "computer-services") {
+                category = "computer";
+            }
 
 
-        localStorage.setItem(
-            "chhatarpurBusinesses",
-            JSON.stringify(savedBusinesses)
-        );
+            const newBusiness = {
+
+                id: Date.now(),
+
+                name: businessName.value.trim(),
+
+                category: category,
+
+                categoryName: categoryName,
+
+                location:
+                    businessAddress.value.trim(),
+
+                description:
+                    businessDescription.value.trim() ||
+                    "Local business listed on Chhatarpur Digital.",
+
+                icon:
+                    getBusinessIcon(category),
+
+                demo: false,
+
+                phone:
+                    businessPhone.value.trim(),
+
+                whatsapp:
+                    businessWhatsapp.value.trim(),
+
+                maps:
+                    businessMaps.value.trim(),
+
+                website:
+                    businessWebsite.value.trim(),
+
+                instagram:
+                    businessInstagram.value.trim(),
+
+                owner:
+                    ownerName.value.trim(),
+
+                status: "pending"
+
+            };
 
 
-        /* ================= ADD TO CURRENT LIST ================= */
+            // SAVE TO LOCAL STORAGE
 
-        businessData.push(newBusiness);
+            let savedBusinesses = [];
 
+            try {
 
-        /* ================= REFRESH DIRECTORY ================= */
+                savedBusinesses =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "chhatarpurBusinesses"
+                        )
+                    ) || [];
 
-        renderBusinesses();
+            } catch (error) {
 
+                savedBusinesses = [];
 
-        /* ================= SUCCESS MESSAGE ================= */
-
-        showToast(
-            "Business submitted successfully! It is now under review."
-        );
-
-
-        /* ================= RESET FORM ================= */
-
-        businessListingForm.reset();
+            }
 
 
-        /* ================= CLOSE FORM ================= */
+            savedBusinesses.push(newBusiness);
 
-        setTimeout(() => {
 
-            businessForm.style.display = "none";
+            localStorage.setItem(
+                "chhatarpurBusinesses",
+                JSON.stringify(savedBusinesses)
+            );
 
-        }, 1000);
 
-    });
+            // ADD TO CURRENT DATA
+
+            businessData.push(newBusiness);
+
+
+            // UPDATE DIRECTORY
+
+            renderBusinesses();
+
+
+            // SUCCESS MESSAGE
+
+            showToast(
+                "Business submitted successfully! It is now under review."
+            );
+
+
+            // RESET FORM
+
+            businessListingForm.reset();
+
+
+            // CLOSE FORM
+
+            setTimeout(() => {
+
+                if (businessForm) {
+                    businessForm.style.display = "none";
+                }
+
+            }, 1000);
+
+        }
+    );
 
 }
 
 
-/* ================= LOAD SAVED BUSINESSES ================= */
+// =====================================================
+// LOAD SAVED BUSINESSES
+// =====================================================
 
-const savedBusinesses =
-    JSON.parse(
-        localStorage.getItem("chhatarpurBusinesses")
-    ) || [];
+try {
+
+    const savedBusinesses =
+        JSON.parse(
+            localStorage.getItem(
+                "chhatarpurBusinesses"
+            )
+        ) || [];
 
 
-savedBusinesses.forEach(business => {
+    savedBusinesses.forEach(savedBusiness => {
 
-    const alreadyExists =
-        businessData.some(
-            item => item.id === business.id
-        );
+        const alreadyExists =
+            businessData.some(
+                business =>
+                    String(business.id) ===
+                    String(savedBusiness.id)
+            );
 
-    if (!alreadyExists) {
 
-        businessData.push(business);
+        if (!alreadyExists) {
 
+            businessData.push(savedBusiness);
+
+        }
+
+    });
+
+} catch (error) {
+
+    console.log(
+        "Unable to load saved businesses."
+    );
+
+}
+
+
+// =====================================================
+// ESCAPE KEY
+// =====================================================
+
+document.addEventListener("keydown", event => {
+
+    if (event.key !== "Escape") return;
+
+    closeServiceModal();
+    closeBusinessModal();
+
+    if (businessForm) {
+        businessForm.style.display = "none";
     }
 
 });
 
 
-/* ================= UPDATE DIRECTORY ================= */
+// =====================================================
+// BUTTON MICRO INTERACTION
+// =====================================================
+
+document.querySelectorAll(".btn").forEach(button => {
+
+    button.addEventListener("mouseenter", () => {
+
+        button.style.transform = "translateY(-2px)";
+
+    });
+
+
+    button.addEventListener("mouseleave", () => {
+
+        button.style.transform = "";
+
+    });
+
+});
+
+
+// =====================================================
+// INITIAL BUSINESS DIRECTORY RENDER
+// =====================================================
 
 renderBusinesses();
 
 
-/* ================= ESCAPE ================= */
+// =====================================================
+// CONSOLE
+// =====================================================
 
-document.addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Escape" &&
-            businessModal &&
-            businessModal.classList.contains(
-                "active"
-            )
-        ) {
-
-            closeBusinessModal();
-
-        }
-
-    }
+console.log(
+    "Aashish Digital website loaded successfully."
 );
 
-
-/* ================= INITIAL RENDER ================= */
-
-renderBusinesses();
+console.log(
+    "Chhatarpur Business Hub initialized."
+);
