@@ -655,6 +655,496 @@
 
 
 
+
+        <!-- =====================================================
+     BUSINESS DIRECTORY
+===================================================== -->
+
+<section id="businesses" class="business-directory section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <span class="section-eyebrow">
+                CHHATARPUR BUSINESS HUB
+            </span>
+
+            <h2>
+                Find Local <span>Businesses.</span>
+            </h2>
+
+            <p>
+                Discover local businesses, shops and services
+                in Chhatarpur — all in one place.
+            </p>
+
+        </div>
+
+
+        <!-- SEARCH + FILTER -->
+
+        <div class="business-toolbar">
+
+            <div class="business-search">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="text"
+                    id="businessSearch"
+                    placeholder="Search business..."
+                >
+
+            </div>
+
+
+            <div class="business-filter">
+
+                <i class="fa-solid fa-filter"></i>
+
+                <select id="businessCategory">
+
+                    <option value="all">
+                        All Categories
+                    </option>
+
+                    <option value="restaurant">
+                        Restaurants
+                    </option>
+
+                    <option value="hotel">
+                        Hotels
+                    </option>
+
+                    <option value="shop">
+                        Shops
+                    </option>
+
+                    <option value="clinic">
+                        Doctors / Clinics
+                    </option>
+
+                    <option value="lawyer">
+                        Lawyers
+                    </option>
+
+                    <option value="coaching">
+                        Coaching
+                    </option>
+
+                    <option value="real-estate">
+                        Real Estate
+                    </option>
+
+                    <option value="salon">
+                        Salon
+                    </option>
+
+                    <option value="computer">
+                        Computer Services
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BUSINESS CARDS -->
+
+        <div
+            class="business-grid"
+            id="businessGrid"
+        ></div>
+
+
+        <!-- EMPTY MESSAGE -->
+
+        <div
+            class="business-empty"
+            id="businessEmpty"
+            style="display:none;"
+        >
+
+            <i class="fa-solid fa-store-slash"></i>
+
+            <h3>No businesses found</h3>
+
+            <p>
+                Try another business name or category.
+            </p>
+
+        </div>
+
+
+        <!-- ADD BUSINESS -->
+
+        <div class="add-business">
+
+            <div class="add-business-content">
+
+                <span class="section-eyebrow">
+                    FOR LOCAL BUSINESSES
+                </span>
+
+                <h2>
+                    Add Your Business
+                </h2>
+
+                <p>
+                    Want your business to appear on
+                    Chhatarpur Digital?
+                    Submit your business details for review.
+                </p>
+
+            </div>
+
+
+            <button
+                class="btn btn-primary"
+                id="openBusinessForm"
+                type="button"
+            >
+
+                <i class="fa-solid fa-plus"></i>
+
+                Add Your Business
+
+            </button>
+
+        </div>
+
+
+        <!-- ADD BUSINESS FORM -->
+
+        <div
+            class="business-form-wrapper"
+            id="businessForm"
+            style="display:none;"
+        >
+
+            <div class="business-form-card">
+
+                <div class="business-form-header">
+
+                    <div>
+
+                        <span class="section-eyebrow">
+                            BUSINESS LISTING
+                        </span>
+
+                        <h3>
+                            Business Details
+                        </h3>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="business-form-close"
+                        id="closeBusinessForm"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                    </button>
+
+                </div>
+
+
+                <form id="businessListingForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>
+                                Business Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="businessName"
+                                required
+                                placeholder="Your business name"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Category *
+                            </label>
+
+                            <select
+                                id="businessFormCategory"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="Restaurant">
+                                    Restaurant
+                                </option>
+
+                                <option value="Shop">
+                                    Shop
+                                </option>
+
+                                <option value="Clinic">
+                                    Doctor / Clinic
+                                </option>
+
+                                <option value="Hotel">
+                                    Hotel
+                                </option>
+
+                                <option value="Lawyer">
+                                    Lawyer
+                                </option>
+
+                                <option value="Coaching">
+                                    Coaching
+                                </option>
+
+                                <option value="Real Estate">
+                                    Real Estate
+                                </option>
+
+                                <option value="Salon">
+                                    Salon
+                                </option>
+
+                                <option value="Computer Services">
+                                    Computer Services
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Owner Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="ownerName"
+                                placeholder="Owner name"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone *
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="businessPhone"
+                                required
+                                placeholder="Business phone"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                WhatsApp
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="businessWhatsapp"
+                                placeholder="WhatsApp number"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Google Maps Link
+                            </label>
+
+                            <input
+                                type="url"
+                                id="businessMaps"
+                                placeholder="https://maps.google.com/..."
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Website
+                            </label>
+
+                            <input
+                                type="url"
+                                id="businessWebsite"
+                                placeholder="https://yourwebsite.com"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Instagram
+                            </label>
+
+                            <input
+                                type="url"
+                                id="businessInstagram"
+                                placeholder="Instagram profile link"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group form-full">
+
+                            <label>
+                                Business Address *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="businessAddress"
+                                required
+                                placeholder="Complete business address"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group form-full">
+
+                            <label>
+                                Business Description
+                            </label>
+
+                            <textarea
+                                id="businessDescription"
+                                rows="4"
+                                placeholder="Tell customers about your business..."
+                            ></textarea>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Submit Business
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     BUSINESS DETAILS MODAL
+===================================================== -->
+
+<div
+    class="business-modal"
+    id="businessModal"
+>
+
+    <div
+        class="business-modal-overlay"
+        id="businessModalOverlay"
+    ></div>
+
+
+    <div class="business-modal-box">
+
+        <button
+            class="business-modal-close"
+            id="businessModalClose"
+            type="button"
+        >
+
+            <i class="fa-solid fa-xmark"></i>
+
+        </button>
+
+
+        <div
+            class="business-modal-icon"
+            id="businessModalIcon"
+        >
+
+            <i class="fa-solid fa-store"></i>
+
+        </div>
+
+
+        <span
+            class="business-modal-category"
+            id="businessModalCategory"
+        ></span>
+
+
+        <h2 id="businessModalTitle"></h2>
+
+
+        <div
+            class="business-modal-location"
+            id="businessModalLocation"
+        ></div>
+
+
+        <p
+            id="businessModalDescription"
+        ></p>
+
+
+        <div
+            class="business-modal-actions"
+            id="businessModalActions"
+        ></div>
+
+    </div>
+
+</div>
+
+
+
         <!-- =================================================
              PRICING
         ================================================== -->
