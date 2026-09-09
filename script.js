@@ -533,3 +533,662 @@ console.log(
 console.log(
     "HTML + CSS + JavaScript successfully loaded."
 );
+
+
+
+/* =====================================================
+   BUSINESS DIRECTORY
+===================================================== */
+
+
+/* ================= BUSINESS DATA ================= */
+
+const businessData = [
+
+    {
+        id: 1,
+        name: "Chhatarpur Fresh Café",
+        category: "restaurant",
+        categoryName: "Restaurant",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local restaurant and food business.",
+        icon: "fa-solid fa-utensils",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 2,
+        name: "City Style Salon",
+        category: "salon",
+        categoryName: "Salon",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local salon and beauty service.",
+        icon: "fa-solid fa-scissors",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 3,
+        name: "Chhatarpur Computer Point",
+        category: "computer",
+        categoryName: "Computer Services",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for computer, laptop and digital services.",
+        icon: "fa-solid fa-computer",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 4,
+        name: "City Care Clinic",
+        category: "clinic",
+        categoryName: "Doctor / Clinic",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local healthcare service.",
+        icon: "fa-solid fa-user-doctor",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 5,
+        name: "Chhatarpur Property Hub",
+        category: "real-estate",
+        categoryName: "Real Estate",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for local property buying, selling and rental services.",
+        icon: "fa-solid fa-house",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 6,
+        name: "Smart Choice Store",
+        category: "shop",
+        categoryName: "Shop",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local retail store.",
+        icon: "fa-solid fa-store",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 7,
+        name: "Chhatarpur Law Associates",
+        category: "lawyer",
+        categoryName: "Lawyer",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local legal service.",
+        icon: "fa-solid fa-scale-balanced",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 8,
+        name: "Bright Future Coaching",
+        category: "coaching",
+        categoryName: "Coaching",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local coaching institute.",
+        icon: "fa-solid fa-graduation-cap",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    },
+
+
+    {
+        id: 9,
+        name: "Royal Stay Hotel",
+        category: "hotel",
+        categoryName: "Hotel",
+        location: "Chhatarpur, Madhya Pradesh",
+        description:
+            "Demo listing for a local hotel and accommodation service.",
+        icon: "fa-solid fa-hotel",
+        demo: true,
+        phone: "",
+        whatsapp: "",
+        maps: ""
+    }
+
+];
+
+
+/* ================= ELEMENTS ================= */
+
+const businessGrid =
+    document.getElementById("businessGrid");
+
+const businessSearch =
+    document.getElementById("businessSearch");
+
+const businessCategory =
+    document.getElementById("businessCategory");
+
+const businessEmpty =
+    document.getElementById("businessEmpty");
+
+
+/* ================= ICON ================= */
+
+function getBusinessIcon(category) {
+
+    const icons = {
+
+        restaurant: "fa-solid fa-utensils",
+
+        hotel: "fa-solid fa-hotel",
+
+        shop: "fa-solid fa-store",
+
+        clinic: "fa-solid fa-user-doctor",
+
+        lawyer: "fa-solid fa-scale-balanced",
+
+        coaching: "fa-solid fa-graduation-cap",
+
+        "real-estate": "fa-solid fa-house",
+
+        salon: "fa-solid fa-scissors",
+
+        computer: "fa-solid fa-computer"
+
+    };
+
+    return icons[category] ||
+        "fa-solid fa-store";
+
+}
+
+
+/* ================= RENDER BUSINESSES ================= */
+
+function renderBusinesses() {
+
+    if (!businessGrid) return;
+
+
+    const searchTerm =
+        businessSearch.value
+            .trim()
+            .toLowerCase();
+
+
+    const selectedCategory =
+        businessCategory.value;
+
+
+    const filteredBusinesses =
+        businessData.filter(business => {
+
+            const matchesSearch =
+                business.name
+                    .toLowerCase()
+                    .includes(searchTerm) ||
+
+                business.categoryName
+                    .toLowerCase()
+                    .includes(searchTerm) ||
+
+                business.location
+                    .toLowerCase()
+                    .includes(searchTerm);
+
+
+            const matchesCategory =
+                selectedCategory === "all" ||
+                business.category === selectedCategory;
+
+
+            return matchesSearch &&
+                matchesCategory;
+
+        });
+
+
+    businessGrid.innerHTML = "";
+
+
+    if (filteredBusinesses.length === 0) {
+
+        businessEmpty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    businessEmpty.style.display =
+        "none";
+
+
+    filteredBusinesses.forEach(business => {
+
+        const card =
+            document.createElement("article");
+
+        card.className =
+            "business-card";
+
+
+        card.innerHTML = `
+
+            <div class="business-card-top">
+
+                <div class="business-card-icon">
+
+                    <i class="${getBusinessIcon(
+                        business.category
+                    )}"></i>
+
+                </div>
+
+                <span class="business-badge">
+
+                    <i class="fa-solid fa-flask"></i>
+
+                    Demo Listing
+
+                </span>
+
+            </div>
+
+
+            <div class="business-category">
+
+                ${business.categoryName}
+
+            </div>
+
+
+            <h3>
+
+                ${business.name}
+
+            </h3>
+
+
+            <div class="business-location">
+
+                <i class="fa-solid fa-location-dot"></i>
+
+                <span>
+                    ${business.location}
+                </span>
+
+            </div>
+
+
+            <p class="business-description">
+
+                ${business.description}
+
+            </p>
+
+
+            <div class="business-actions">
+
+                <button
+                    class="business-action primary"
+                    type="button"
+                    data-business-id="${business.id}"
+                >
+
+                    <i class="fa-solid fa-eye"></i>
+
+                    Details
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        businessGrid.appendChild(card);
+
+    });
+
+
+    attachBusinessDetails();
+
+}
+
+
+/* ================= DETAILS ================= */
+
+function attachBusinessDetails() {
+
+    const detailButtons =
+        document.querySelectorAll(
+            "[data-business-id]"
+        );
+
+
+    detailButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const businessId =
+                    Number(
+                        button.dataset.businessId
+                    );
+
+
+                const business =
+                    businessData.find(
+                        item =>
+                            item.id === businessId
+                    );
+
+
+                if (!business) return;
+
+
+                openBusinessModal(
+                    business
+                );
+
+            }
+        );
+
+    });
+
+}
+
+
+/* ================= BUSINESS MODAL ================= */
+
+const businessModal =
+    document.getElementById(
+        "businessModal"
+    );
+
+const businessModalOverlay =
+    document.getElementById(
+        "businessModalOverlay"
+    );
+
+const businessModalClose =
+    document.getElementById(
+        "businessModalClose"
+    );
+
+const businessModalIcon =
+    document.getElementById(
+        "businessModalIcon"
+    );
+
+const businessModalCategory =
+    document.getElementById(
+        "businessModalCategory"
+    );
+
+const businessModalTitle =
+    document.getElementById(
+        "businessModalTitle"
+    );
+
+const businessModalLocation =
+    document.getElementById(
+        "businessModalLocation"
+    );
+
+const businessModalDescription =
+    document.getElementById(
+        "businessModalDescription"
+    );
+
+const businessModalActions =
+    document.getElementById(
+        "businessModalActions"
+    );
+
+
+function openBusinessModal(business) {
+
+    businessModalIcon.innerHTML =
+        `<i class="${getBusinessIcon(
+            business.category
+        )}"></i>`;
+
+
+    businessModalCategory.textContent =
+        business.categoryName;
+
+
+    businessModalTitle.textContent =
+        business.name;
+
+
+    businessModalLocation.innerHTML =
+        `<i class="fa-solid fa-location-dot"></i>
+         ${business.location}`;
+
+
+    businessModalDescription.textContent =
+        business.description;
+
+
+    businessModalActions.innerHTML = `
+
+        <button
+            class="business-action primary"
+            type="button"
+            onclick="showToast('This is a demo business listing.')"
+        >
+
+            <i class="fa-solid fa-circle-info"></i>
+
+            Demo Listing
+
+        </button>
+
+    `;
+
+
+    businessModal.classList.add(
+        "active"
+    );
+
+}
+
+
+function closeBusinessModal() {
+
+    businessModal.classList.remove(
+        "active"
+    );
+
+}
+
+
+if (businessModalClose) {
+
+    businessModalClose.addEventListener(
+        "click",
+        closeBusinessModal
+    );
+
+}
+
+
+if (businessModalOverlay) {
+
+    businessModalOverlay.addEventListener(
+        "click",
+        closeBusinessModal
+    );
+
+}
+
+
+/* ================= SEARCH ================= */
+
+if (businessSearch) {
+
+    businessSearch.addEventListener(
+        "input",
+        renderBusinesses
+    );
+
+}
+
+
+/* ================= CATEGORY ================= */
+
+if (businessCategory) {
+
+    businessCategory.addEventListener(
+        "change",
+        renderBusinesses
+    );
+
+}
+
+
+/* ================= ADD BUSINESS FORM ================= */
+
+const openBusinessForm =
+    document.getElementById(
+        "openBusinessForm"
+    );
+
+const closeBusinessForm =
+    document.getElementById(
+        "closeBusinessForm"
+    );
+
+const businessForm =
+    document.getElementById(
+        "businessForm"
+    );
+
+const businessListingForm =
+    document.getElementById(
+        "businessListingForm"
+    );
+
+
+if (openBusinessForm) {
+
+    openBusinessForm.addEventListener(
+        "click",
+        () => {
+
+            businessForm.style.display =
+                "block";
+
+            businessForm.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        }
+    );
+
+}
+
+
+if (closeBusinessForm) {
+
+    closeBusinessForm.addEventListener(
+        "click",
+        () => {
+
+            businessForm.style.display =
+                "none";
+
+        }
+    );
+
+}
+
+
+if (businessListingForm) {
+
+    businessListingForm.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+
+            showToast(
+                "Thank you! Your business details have been submitted for review."
+            );
+
+
+            businessListingForm.reset();
+
+        }
+    );
+
+}
+
+
+/* ================= ESCAPE ================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape" &&
+            businessModal &&
+            businessModal.classList.contains(
+                "active"
+            )
+        ) {
+
+            closeBusinessModal();
+
+        }
+
+    }
+);
+
+
+/* ================= INITIAL RENDER ================= */
+
+renderBusinesses();
