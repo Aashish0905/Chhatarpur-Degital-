@@ -111,7 +111,49 @@ img {
     justify-content: space-between;
 }
 
+
+
+/* =========================
+   LOGO
+========================= */
+
 .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.logo img {
+    width: 155px;
+    height: auto;
+    max-height: 55px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Navbar alignment */
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* =========================
+   MOBILE LOGO
+========================= */
+
+@media (max-width: 768px) {
+
+    .logo img {
+        width: 125px;
+        max-height: 48px;
+    }
+
+}
+
+/* .logo {
     font-family: "Manrope", sans-serif;
 
     font-size: 23px;
@@ -122,7 +164,7 @@ img {
 
 .logo span {
     color: var(--accent);
-}
+} */
 
 .nav {
     display: flex;
