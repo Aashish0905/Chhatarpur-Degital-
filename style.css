@@ -1611,17 +1611,6 @@ img {
 }
 
 
-/* ================= FOOTER ================= */
-
-
-
-.footer-brand .logo img {
-    width: 150px;
-    height: auto;
-    max-height: 50px;
-    object-fit: contain;
-    display: block;
-}
 
 .footer {
     background: #0b0b0b;
