@@ -132,6 +132,59 @@ img {
     display: block;
 }
 
+
+/* ================================
+   AASHISH DIGITAL LOGO
+================================ */
+
+.header .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 0;
+    flex-shrink: 0;
+}
+
+.header .logo img {
+    display: block;
+    width: 150px;
+    height: 52px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .header .logo img {
+        width: 155px;
+        height: 52px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .header .logo img {
+        width: 140px;
+        height: 48px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .header .logo img {
+        width: 125px;
+        height: 45px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .header .logo img {
+        width: 115px;
+        height: 42px;
+    }
+}
+
 /* Navbar alignment */
 
 .nav-container {
