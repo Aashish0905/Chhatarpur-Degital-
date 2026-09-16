@@ -728,3 +728,393 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+
+
+
+
+
+/* =================================
+   CLIENTS SLIDER
+================================= */
+
+(function () {
+
+    const slider = document.querySelector(".clients-slider");
+
+    if (!slider) return;
+
+    const viewport = slider.querySelector(".clients-viewport");
+    const track = slider.querySelector(".clients-track");
+    const slides = Array.from(slider.querySelectorAll(".client-slide"));
+    const prevButton = slider.querySelector(".clients-prev");
+    const nextButton = slider.querySelector(".clients-next");
+    const dotsContainer = document.querySelector(".clients-dots");
+
+    if (!track || !slides.length) return;
+
+
+    let currentIndex = 0;
+    let slidesPerView = 3;
+    let autoSlideTimer;
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+
+    /* ================================
+       GET SLIDES PER VIEW
+    ================================= */
+
+    function getSlidesPerView() {
+
+        if (window.innerWidth <= 700) {
+            return 1;
+        }
+
+        if (window.innerWidth <= 1000) {
+            return 2;
+        }
+
+        return 3;
+    }
+
+
+    /* ================================
+       TOTAL PAGES
+    ================================= */
+
+    function getTotalPages() {
+
+        slidesPerView = getSlidesPerView();
+
+        return Math.max(
+            1,
+            Math.ceil(slides.length / slidesPerView)
+        );
+    }
+
+
+    /* ================================
+       CREATE DOTS
+    ================================= */
+
+    function createDots() {
+
+        if (!dotsContainer) return;
+
+        dotsContainer.innerHTML = "";
+
+        const totalPages = getTotalPages();
+
+        for (let i = 0; i < totalPages; i++) {
+
+            const dot = document.createElement("button");
+
+            dot.className = "clients-dot";
+
+            dot.type = "button";
+
+            dot.setAttribute(
+                "aria-label",
+                "Go to client slide " + (i + 1)
+            );
+
+            dot.addEventListener("click", function () {
+
+                goToSlide(i);
+
+                restartAutoSlide();
+
+            });
+
+            dotsContainer.appendChild(dot);
+        }
+
+    }
+
+
+    /* ================================
+       UPDATE DOTS
+    ================================= */
+
+    function updateDots() {
+
+        if (!dotsContainer) return;
+
+        const dots =
+            dotsContainer.querySelectorAll(".clients-dot");
+
+        dots.forEach(function (dot, index) {
+
+            dot.classList.toggle(
+                "active",
+                index === currentIndex
+            );
+
+        });
+
+    }
+
+
+    /* ================================
+       GO TO SLIDE
+    ================================= */
+
+    function goToSlide(index) {
+
+        const totalPages = getTotalPages();
+
+        if (index < 0) {
+            index = totalPages - 1;
+        }
+
+        if (index >= totalPages) {
+            index = 0;
+        }
+
+        currentIndex = index;
+
+        const percentage =
+            currentIndex * (100 / slidesPerView);
+
+        track.style.transform =
+            "translateX(-" + percentage + "%)";
+
+        updateDots();
+
+    }
+
+
+    /* ================================
+       NEXT
+    ================================= */
+
+    function nextSlide() {
+
+        goToSlide(currentIndex + 1);
+
+    }
+
+
+    /* ================================
+       PREVIOUS
+    ================================= */
+
+    function previousSlide() {
+
+        goToSlide(currentIndex - 1);
+
+    }
+
+
+    /* ================================
+       AUTO SLIDE
+    ================================= */
+
+    function startAutoSlide() {
+
+        stopAutoSlide();
+
+        autoSlideTimer = setInterval(function () {
+
+            nextSlide();
+
+        }, 5000);
+
+    }
+
+
+    function stopAutoSlide() {
+
+        if (autoSlideTimer) {
+
+            clearInterval(autoSlideTimer);
+
+            autoSlideTimer = null;
+
+        }
+
+    }
+
+
+    function restartAutoSlide() {
+
+        startAutoSlide();
+
+    }
+
+
+    /* ================================
+       ARROWS
+    ================================= */
+
+    if (nextButton) {
+
+        nextButton.addEventListener(
+            "click",
+            function () {
+
+                nextSlide();
+
+                restartAutoSlide();
+
+            }
+        );
+
+    }
+
+
+    if (prevButton) {
+
+        prevButton.addEventListener(
+            "click",
+            function () {
+
+                previousSlide();
+
+                restartAutoSlide();
+
+            }
+        );
+
+    }
+
+
+    /* ================================
+       TOUCH SWIPE
+    ================================= */
+
+    viewport.addEventListener(
+        "touchstart",
+        function (event) {
+
+            touchStartX =
+                event.changedTouches[0].screenX;
+
+            stopAutoSlide();
+
+        },
+        { passive: true }
+    );
+
+
+    viewport.addEventListener(
+        "touchend",
+        function (event) {
+
+            touchEndX =
+                event.changedTouches[0].screenX;
+
+            handleSwipe();
+
+            startAutoSlide();
+
+        },
+        { passive: true }
+    );
+
+
+    function handleSwipe() {
+
+        const swipeDistance =
+            touchEndX - touchStartX;
+
+        const minimumSwipeDistance = 50;
+
+        if (
+            Math.abs(swipeDistance) <
+            minimumSwipeDistance
+        ) {
+            return;
+        }
+
+        if (swipeDistance < 0) {
+
+            nextSlide();
+
+        } else {
+
+            previousSlide();
+
+        }
+
+    }
+
+
+    /* ================================
+       PAUSE ON HOVER
+    ================================= */
+
+    slider.addEventListener(
+        "mouseenter",
+        stopAutoSlide
+    );
+
+    slider.addEventListener(
+        "mouseleave",
+        startAutoSlide
+    );
+
+
+    /* ================================
+       RESIZE
+    ================================= */
+
+    let resizeTimer;
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            clearTimeout(resizeTimer);
+
+            resizeTimer = setTimeout(function () {
+
+                const oldSlidesPerView =
+                    slidesPerView;
+
+                const newSlidesPerView =
+                    getSlidesPerView();
+
+                if (
+                    oldSlidesPerView !==
+                    newSlidesPerView
+                ) {
+
+                    slidesPerView =
+                        newSlidesPerView;
+
+                    createDots();
+
+                    const totalPages =
+                        getTotalPages();
+
+                    if (
+                        currentIndex >=
+                        totalPages
+                    ) {
+                        currentIndex =
+                            totalPages - 1;
+                    }
+
+                }
+
+                goToSlide(currentIndex);
+
+            }, 150);
+
+        }
+    );
+
+
+    /* ================================
+       INITIALIZE
+    ================================= */
+
+    createDots();
+
+    goToSlide(0);
+
+    startAutoSlide();
+
+})();
