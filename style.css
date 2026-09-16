@@ -4098,3 +4098,557 @@ img {
 
 }
 
+
+
+
+
+
+
+/* ================================
+   CLIENTS SECTION
+================================ */
+
+.clients-section {
+    padding: 100px 20px;
+    background: #050505;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.clients-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.clients-heading {
+    max-width: 720px;
+    margin: 0 auto 55px;
+    text-align: center;
+}
+
+.section-eyebrow {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #c9a227;
+}
+
+.clients-heading h2 {
+    margin: 0;
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+
+.clients-heading h2 span {
+    color: #c9a227;
+}
+
+.clients-heading p {
+    max-width: 620px;
+    margin: 20px auto 0;
+    color: #a9a9a9;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* ================================
+   SLIDER
+================================ */
+
+.clients-slider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.clients-viewport {
+    width: 100%;
+    overflow: hidden;
+    touch-action: pan-y;
+}
+
+.clients-track {
+    display: flex;
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+.client-slide {
+    flex: 0 0 33.333333%;
+    min-width: 0;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+
+/* ================================
+   CLIENT CARD
+================================ */
+
+.client-card {
+    height: 100%;
+    min-height: 560px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 22px;
+    background: linear-gradient(
+        145deg,
+        #111111,
+        #080808
+    );
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.client-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(201, 162, 39, 0.45);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+}
+
+
+/* ================================
+   CLIENT HEADER
+================================ */
+
+.client-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.client-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #c9a227;
+}
+
+.client-initial {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(201, 162, 39, 0.5);
+    color: #c9a227;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.client-card h3 {
+    margin: 0;
+    font-size: 25px;
+    line-height: 1.2;
+}
+
+.client-category {
+    margin: 8px 0 28px;
+    color: #999999;
+    font-size: 14px;
+}
+
+
+/* ================================
+   PROJECT
+================================ */
+
+.client-project {
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.client-project > span {
+    display: block;
+    margin-bottom: 9px;
+    color: #c9a227;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.client-project h4 {
+    margin: 0 0 10px;
+    font-size: 17px;
+    line-height: 1.4;
+}
+
+.client-project p {
+    margin: 0;
+    color: #999999;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+
+/* ================================
+   VIDEO TESTIMONIAL
+================================ */
+
+.client-video {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 22px;
+    padding: 15px;
+    border-radius: 14px;
+    background: rgba(201, 162, 39, 0.08);
+    border: 1px solid rgba(201, 162, 39, 0.15);
+}
+
+.video-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #c9a227;
+    color: #050505;
+    font-size: 14px;
+}
+
+.client-video strong {
+    display: block;
+    font-size: 13px;
+}
+
+.client-video small {
+    display: block;
+    margin-top: 4px;
+    color: #888888;
+    font-size: 11px;
+}
+
+.client-video-placeholder {
+    opacity: 0.7;
+}
+
+
+/* ================================
+   REVIEW
+================================ */
+
+.client-review {
+    position: relative;
+    margin-top: 20px;
+    padding-left: 18px;
+}
+
+.quote-mark {
+    position: absolute;
+    left: 0;
+    top: -5px;
+    color: #c9a227;
+    font-size: 24px;
+    line-height: 1;
+}
+
+.client-review p {
+    margin: 0;
+    color: #999999;
+    font-size: 12px;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+
+/* ================================
+   CLIENT BUTTON
+================================ */
+
+.client-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+    padding: 11px 17px;
+    border: 1px solid rgba(201, 162, 39, 0.5);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.client-button:hover {
+    background: #c9a227;
+    color: #050505;
+    border-color: #c9a227;
+}
+
+.client-button span {
+    font-size: 15px;
+}
+
+
+/* ================================
+   ARROWS
+================================ */
+
+.clients-arrow {
+    position: relative;
+    z-index: 5;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    background: #101010;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clients-arrow:hover {
+    background: #c9a227;
+    color: #050505;
+    border-color: #c9a227;
+}
+
+.clients-arrow:active {
+    transform: scale(0.92);
+}
+
+
+/* ================================
+   DOTS
+================================ */
+
+.clients-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 30px;
+}
+
+.clients-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #444444;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clients-dot.active {
+    width: 24px;
+    border-radius: 20px;
+    background: #c9a227;
+}
+
+
+/* ================================
+   CTA
+================================ */
+
+.clients-cta {
+    max-width: 760px;
+    margin: 80px auto 0;
+    padding: 45px 30px;
+    text-align: center;
+    border: 1px solid rgba(201, 162, 39, 0.18);
+    border-radius: 24px;
+    background: linear-gradient(
+        145deg,
+        rgba(201, 162, 39, 0.08),
+        rgba(255, 255, 255, 0.02)
+    );
+}
+
+.clients-cta-icon {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #c9a227;
+    color: #050505;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.clients-cta > span {
+    color: #c9a227;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.clients-cta h3 {
+    margin: 14px 0 10px;
+    font-size: 30px;
+}
+
+.clients-cta p {
+    max-width: 580px;
+    margin: 0 auto;
+    color: #999999;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.clients-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 25px;
+    padding: 13px 22px;
+    border-radius: 999px;
+    background: #c9a227;
+    color: #050505;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    transition: all 0.3s ease;
+}
+
+.clients-cta-button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ================================
+   TRUST BAR
+================================ */
+
+.clients-trust {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 55px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.clients-trust > div {
+    padding: 25px 20px;
+    text-align: center;
+}
+
+.clients-trust > div + div {
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.clients-trust strong {
+    display: block;
+    font-size: 13px;
+}
+
+.clients-trust span {
+    display: block;
+    margin-top: 6px;
+    color: #777777;
+    font-size: 11px;
+}
+
+
+/* ================================
+   TABLET
+================================ */
+
+@media (max-width: 1000px) {
+
+    .client-slide {
+        flex: 0 0 50%;
+    }
+
+}
+
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+    .clients-section {
+        padding: 75px 15px;
+    }
+
+    .clients-heading {
+        margin-bottom: 35px;
+    }
+
+    .clients-heading h2 {
+        font-size: 36px;
+    }
+
+    .clients-heading p {
+        font-size: 14px;
+    }
+
+    .clients-slider {
+        gap: 8px;
+    }
+
+    .client-slide {
+        flex: 0 0 100%;
+        padding: 0 4px;
+    }
+
+    .client-card {
+        min-height: auto;
+        padding: 25px;
+    }
+
+    .clients-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 17px;
+    }
+
+    .clients-cta {
+        margin-top: 60px;
+        padding: 35px 22px;
+    }
+
+    .clients-cta h3 {
+        font-size: 25px;
+    }
+
+    .clients-trust {
+        grid-template-columns: 1fr;
+    }
+
+    .clients-trust > div + div {
+        border-left: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+}
+
+
+/* ================================
+   REDUCED MOTION
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .clients-track {
+        transition: none;
+    }
+
+}
+
