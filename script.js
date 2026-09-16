@@ -1,6 +1,6 @@
 // =====================================================
 // AASHISH DIGITAL - MAIN JAVASCRIPT
-// FINAL REPLACE VERSION
+// FINAL WORKING VERSION
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const navLinks = document.querySelectorAll(".nav-link");
 
     console.log("AASHISH DIGITAL JS LOADED");
-    console.log("Menu Button:", menuBtn);
-    console.log("Navigation:", nav);
 
 
     // =====================================================
@@ -32,28 +30,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // =====================================================
     // MOBILE MENU
-    // IMPORTANT:
-    // YOUR CSS USES .nav.open
     // =====================================================
+
+    function closeMobileMenu() {
+
+        if (!nav || !menuBtn) return;
+
+        nav.classList.remove("open");
+
+        menuBtn.setAttribute("aria-expanded", "false");
+        menuBtn.setAttribute("aria-label", "Open Menu");
+
+        const icon = menuBtn.querySelector("i");
+
+        if (icon) {
+            icon.classList.remove("fa-xmark");
+            icon.classList.add("fa-bars");
+        }
+    }
+
 
     if (menuBtn && nav) {
 
         menuBtn.setAttribute("aria-expanded", "false");
         menuBtn.setAttribute("aria-label", "Open Menu");
 
-
-        // ---------------------------------------------
-        // OPEN / CLOSE MENU
-        // ---------------------------------------------
-
         menuBtn.addEventListener("click", function (event) {
 
             event.preventDefault();
             event.stopPropagation();
 
-            nav.classList.toggle("open");
-
-            const isOpen = nav.classList.contains("open");
+            const isOpen = nav.classList.toggle("open");
 
             menuBtn.setAttribute(
                 "aria-expanded",
@@ -65,177 +72,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 isOpen ? "Close Menu" : "Open Menu"
             );
 
-
-            // Change hamburger icon
             const icon = menuBtn.querySelector("i");
 
             if (icon) {
 
-                if (isOpen) {
-
-                    icon.classList.remove("fa-bars");
-                    icon.classList.add("fa-xmark");
-
-                } else {
-
-                    icon.classList.remove("fa-xmark");
-                    icon.classList.add("fa-bars");
-
-                }
+                icon.classList.toggle("fa-bars", !isOpen);
+                icon.classList.toggle("fa-xmark", isOpen);
 
             }
-
-            console.log("Mobile menu:", isOpen ? "OPEN" : "CLOSED");
 
         });
 
 
-        // ---------------------------------------------
-        // CLOSE MENU WHEN LINK IS CLICKED
-        // ---------------------------------------------
-
         navLinks.forEach(function (link) {
 
             link.addEventListener("click", function () {
-
-                nav.classList.remove("open");
-
-                menuBtn.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuBtn.setAttribute(
-                    "aria-label",
-                    "Open Menu"
-                );
-
-
-                const icon = menuBtn.querySelector("i");
-
-                if (icon) {
-
-                    icon.classList.remove("fa-xmark");
-                    icon.classList.add("fa-bars");
-
-                }
-
+                closeMobileMenu();
             });
 
         });
 
 
-        // ---------------------------------------------
-        // CLOSE MENU WHEN CLICKING OUTSIDE
-        // ---------------------------------------------
-
         document.addEventListener("click", function (event) {
 
-            if (!nav.classList.contains("open")) {
-                return;
-            }
+            if (!nav.classList.contains("open")) return;
 
             if (
                 !nav.contains(event.target) &&
                 !menuBtn.contains(event.target)
             ) {
-
-                nav.classList.remove("open");
-
-                menuBtn.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuBtn.setAttribute(
-                    "aria-label",
-                    "Open Menu"
-                );
-
-
-                const icon = menuBtn.querySelector("i");
-
-                if (icon) {
-
-                    icon.classList.remove("fa-xmark");
-                    icon.classList.add("fa-bars");
-
-                }
-
+                closeMobileMenu();
             }
 
         });
 
-
-        // ---------------------------------------------
-        // ESCAPE KEY
-        // ---------------------------------------------
-
-        document.addEventListener("keydown", function (event) {
-
-            if (event.key === "Escape") {
-
-                nav.classList.remove("open");
-
-                menuBtn.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuBtn.setAttribute(
-                    "aria-label",
-                    "Open Menu"
-                );
-
-
-                const icon = menuBtn.querySelector("i");
-
-                if (icon) {
-
-                    icon.classList.remove("fa-xmark");
-                    icon.classList.add("fa-bars");
-
-                }
-
-            }
-
-        });
-
-
-        // ---------------------------------------------
-        // CLOSE MENU ON DESKTOP
-        // ---------------------------------------------
 
         window.addEventListener("resize", function () {
 
             if (window.innerWidth > 768) {
-
-                nav.classList.remove("open");
-
-                menuBtn.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-
-                const icon = menuBtn.querySelector("i");
-
-                if (icon) {
-
-                    icon.classList.remove("fa-xmark");
-                    icon.classList.add("fa-bars");
-
-                }
-
+                closeMobileMenu();
             }
 
         });
-
-    } else {
-
-        console.error(
-            "Mobile menu error: menuBtn or nav not found."
-        );
 
     }
 
@@ -244,23 +122,20 @@ document.addEventListener("DOMContentLoaded", function () {
     // HEADER SCROLL EFFECT
     // =====================================================
 
-    window.addEventListener("scroll", function () {
+    function updateHeader() {
 
-        if (!header) {
-            return;
-        }
+        if (!header) return;
 
         if (window.scrollY > 50) {
-
             header.classList.add("scrolled");
-
         } else {
-
             header.classList.remove("scrolled");
-
         }
 
-    });
+    }
+
+    window.addEventListener("scroll", updateHeader);
+    updateHeader();
 
 
     // =====================================================
@@ -278,16 +153,15 @@ document.addEventListener("DOMContentLoaded", function () {
             const sectionTop =
                 section.offsetTop - 160;
 
-            const sectionHeight =
-                section.offsetHeight;
+            const sectionBottom =
+                sectionTop + section.offsetHeight;
 
             if (
                 window.scrollY >= sectionTop &&
-                window.scrollY < sectionTop + sectionHeight
+                window.scrollY < sectionBottom
             ) {
-
-                currentSection = section.getAttribute("id");
-
+                currentSection =
+                    section.getAttribute("id");
             }
 
         });
@@ -301,20 +175,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 link.getAttribute("href");
 
             if (href === "#" + currentSection) {
-
                 link.classList.add("active");
-
             }
 
         });
 
     }
 
-    window.addEventListener(
-        "scroll",
-        updateActiveNav
-    );
-
+    window.addEventListener("scroll", updateActiveNav);
     updateActiveNav();
 
 
@@ -364,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =====================================================
-    // BUTTON HOVER / CLICK EFFECT
+    // BUTTON CLICK EFFECT
     // =====================================================
 
     document.querySelectorAll(".btn").forEach(function (button) {
@@ -373,9 +241,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             this.classList.add("clicked");
 
-            setTimeout(() => {
+            setTimeout(function () {
 
-                this.classList.remove("clicked");
+                button.classList.remove("clicked");
 
             }, 300);
 
@@ -385,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =====================================================
-    // SERVICE DETAILS
+    // SERVICE DATA
     // =====================================================
 
     const serviceData = {
@@ -497,16 +365,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // =====================================================
     // SERVICE MODAL
+    // IMPORTANT:
+    // HTML IDs = modalOverlay + modalClose
     // =====================================================
 
     const serviceModal =
         document.getElementById("serviceModal");
 
     const modalOverlay =
-        document.getElementById("serviceModalOverlay");
+        document.getElementById("modalOverlay");
 
     const modalClose =
-        document.getElementById("serviceModalClose");
+        document.getElementById("modalClose");
 
     const modalIcon =
         document.getElementById("modalIcon");
@@ -527,6 +397,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("modalPrice");
 
 
+    function closeServiceModal() {
+
+        if (!serviceModal) return;
+
+        serviceModal.classList.remove("active");
+
+        document.body.classList.remove("modal-open");
+
+    }
+
+
     document.querySelectorAll(".details-btn").forEach(function (button) {
 
         button.addEventListener("click", function () {
@@ -537,38 +418,33 @@ document.addEventListener("DOMContentLoaded", function () {
             const service =
                 serviceData[serviceName];
 
-            if (!service || !serviceModal) {
-                return;
-            }
+            if (!service || !serviceModal) return;
 
 
             if (modalIcon) {
-
-                modalIcon.className =
-                    service.icon;
-
+                modalIcon.className = "modal-icon";
+                modalIcon.innerHTML =
+                    `<i class="${service.icon}"></i>`;
             }
+
 
             if (modalLabel) {
-
                 modalLabel.textContent =
                     service.label;
-
             }
+
 
             if (modalTitle) {
-
                 modalTitle.textContent =
                     service.title;
-
             }
+
 
             if (modalDescription) {
-
                 modalDescription.textContent =
                     service.description;
-
             }
+
 
             if (modalList) {
 
@@ -588,11 +464,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-            if (modalPrice) {
 
+            if (modalPrice) {
                 modalPrice.textContent =
                     service.price;
-
             }
 
 
@@ -605,34 +480,57 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    function closeServiceModal() {
-
-        if (!serviceModal) {
-            return;
-        }
-
-        serviceModal.classList.remove("active");
-
-        document.body.classList.remove("modal-open");
-
-    }
-
-
     if (modalClose) {
-
         modalClose.addEventListener(
             "click",
             closeServiceModal
         );
-
     }
 
-    if (modalOverlay) {
 
+    if (modalOverlay) {
         modalOverlay.addEventListener(
             "click",
             closeServiceModal
         );
+    }
+
+
+    // =====================================================
+    // TOAST
+    // =====================================================
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById("toast");
+
+        const toastMessage =
+            document.getElementById("toastMessage");
+
+
+        if (!toast) return;
+
+
+        if (toastMessage) {
+            toastMessage.textContent = message;
+        } else {
+            toast.textContent = message;
+        }
+
+
+        toast.classList.add("show");
+
+
+        clearTimeout(window.aashishToastTimer);
+
+
+        window.aashishToastTimer =
+            setTimeout(function () {
+
+                toast.classList.remove("show");
+
+            }, 3000);
 
     }
 
@@ -643,7 +541,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll(".coming-soon").forEach(function (button) {
 
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function (event) {
+
+            event.preventDefault();
 
             showToast(
                 "This feature is coming soon."
@@ -655,51 +555,1087 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // =====================================================
-    // TOAST
+    // BUSINESS HUB
     // =====================================================
 
-    function showToast(message) {
+    const businessGrid =
+        document.getElementById("businessGrid");
 
-        let toast =
-            document.querySelector(".toast");
+    const businessEmpty =
+        document.getElementById("businessEmpty");
 
-        if (!toast) {
+    const businessSearch =
+        document.getElementById("businessSearch");
 
-            toast =
-                document.createElement("div");
+    const businessCategory =
+        document.getElementById("businessCategory");
 
-            toast.className = "toast";
+    const openBusinessForm =
+        document.getElementById("openBusinessForm");
 
-            document.body.appendChild(toast);
+    const closeBusinessForm =
+        document.getElementById("closeBusinessForm");
+
+    const businessFormWrapper =
+        document.getElementById("businessForm");
+
+    const businessListingForm =
+        document.getElementById("businessListingForm");
+
+
+    // =====================================================
+    // BUSINESS MODAL
+    // =====================================================
+
+    const businessModal =
+        document.getElementById("businessModal");
+
+    const businessModalOverlay =
+        document.getElementById("businessModalOverlay");
+
+    const businessModalClose =
+        document.getElementById("businessModalClose");
+
+    const businessModalIcon =
+        document.getElementById("businessModalIcon");
+
+    const businessModalCategory =
+        document.getElementById("businessModalCategory");
+
+    const businessModalTitle =
+        document.getElementById("businessModalTitle");
+
+    const businessModalLocation =
+        document.getElementById("businessModalLocation");
+
+    const businessModalDescription =
+        document.getElementById("businessModalDescription");
+
+    const businessModalActions =
+        document.getElementById("businessModalActions");
+
+
+    // =====================================================
+    // BUSINESS STORAGE
+    // =====================================================
+
+    const BUSINESS_STORAGE_KEY =
+        "aashishDigitalBusinesses";
+
+
+    function getBusinesses() {
+
+        try {
+
+            const saved =
+                localStorage.getItem(
+                    BUSINESS_STORAGE_KEY
+                );
+
+            if (!saved) {
+                return [];
+            }
+
+            const parsed =
+                JSON.parse(saved);
+
+            return Array.isArray(parsed)
+                ? parsed
+                : [];
+
+        } catch (error) {
+
+            console.error(
+                "Business storage error:",
+                error
+            );
+
+            return [];
 
         }
 
-        toast.textContent = message;
+    }
 
-        toast.classList.add("show");
 
-        setTimeout(function () {
+    function saveBusinesses(businesses) {
 
-            toast.classList.remove("show");
+        try {
 
-        }, 3000);
+            localStorage.setItem(
+                BUSINESS_STORAGE_KEY,
+                JSON.stringify(businesses)
+            );
+
+            return true;
+
+        } catch (error) {
+
+            console.error(
+                "Business save error:",
+                error
+            );
+
+            return false;
+
+        }
 
     }
 
 
     // =====================================================
-    // ESCAPE CLOSE MODALS
+    // BUSINESS HELPERS
     // =====================================================
 
-    document.addEventListener("keydown", function (event) {
+    function escapeHTML(value) {
 
-        if (event.key === "Escape") {
+        if (value === null || value === undefined) {
+            return "";
+        }
 
-            closeServiceModal();
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    function normalizeCategory(category) {
+
+        const value =
+            String(category || "")
+                .toLowerCase()
+                .trim();
+
+
+        const categoryMap = {
+
+            restaurant: "restaurant",
+            restaurants: "restaurant",
+
+            hotel: "hotel",
+            hotels: "hotel",
+
+            shop: "shop",
+            shops: "shop",
+
+            clinic: "clinic",
+            doctor: "clinic",
+            "doctor / clinic": "clinic",
+
+            lawyer: "lawyer",
+            lawyers: "lawyer",
+
+            coaching: "coaching",
+
+            "real estate": "real-estate",
+            "real-estate": "real-estate",
+
+            salon: "salon",
+
+            "computer services": "computer",
+            computer: "computer"
+
+        };
+
+
+        return categoryMap[value] || value;
+
+    }
+
+
+    function getCategoryLabel(category) {
+
+        const labels = {
+
+            restaurant: "Restaurant",
+            hotel: "Hotel",
+            shop: "Shop",
+            clinic: "Doctor / Clinic",
+            lawyer: "Lawyer",
+            coaching: "Coaching",
+            "real-estate": "Real Estate",
+            salon: "Salon",
+            computer: "Computer Services"
+
+        };
+
+
+        return labels[
+            normalizeCategory(category)
+        ] || category || "Business";
+
+    }
+
+
+    function getCategoryIcon(category) {
+
+        const icons = {
+
+            restaurant:
+                "fa-solid fa-utensils",
+
+            hotel:
+                "fa-solid fa-hotel",
+
+            shop:
+                "fa-solid fa-shop",
+
+            clinic:
+                "fa-solid fa-user-doctor",
+
+            lawyer:
+                "fa-solid fa-scale-balanced",
+
+            coaching:
+                "fa-solid fa-graduation-cap",
+
+            "real-estate":
+                "fa-solid fa-house",
+
+            salon:
+                "fa-solid fa-scissors",
+
+            computer:
+                "fa-solid fa-computer"
+
+        };
+
+
+        return icons[
+            normalizeCategory(category)
+        ] || "fa-solid fa-store";
+
+    }
+
+
+    function createBusinessId() {
+
+        return Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .substring(2, 8);
+
+    }
+
+
+    function normalizePhone(phone) {
+
+        return String(phone || "")
+            .replace(/[^\d+]/g, "");
+
+    }
+
+
+    function normalizeWhatsApp(phone) {
+
+        let number =
+            String(phone || "")
+                .replace(/\D/g, "");
+
+
+        if (number.length === 10) {
+            number = "91" + number;
+        }
+
+
+        return number;
+
+    }
+
+
+    // =====================================================
+    // RENDER BUSINESSES
+    // =====================================================
+
+    function renderBusinesses() {
+
+        if (!businessGrid) return;
+
+
+        const allBusinesses =
+            getBusinesses();
+
+
+        const searchTerm =
+            businessSearch
+                ? businessSearch.value
+                    .trim()
+                    .toLowerCase()
+                : "";
+
+
+        const selectedCategory =
+            businessCategory
+                ? businessCategory.value
+                : "all";
+
+
+        const filteredBusinesses =
+            allBusinesses.filter(function (business) {
+
+                const businessName =
+                    String(
+                        business.name || ""
+                    ).toLowerCase();
+
+                const description =
+                    String(
+                        business.description || ""
+                    ).toLowerCase();
+
+                const address =
+                    String(
+                        business.address || ""
+                    ).toLowerCase();
+
+                const category =
+                    normalizeCategory(
+                        business.category
+                    );
+
+
+                const matchesSearch =
+                    !searchTerm ||
+                    businessName.includes(searchTerm) ||
+                    description.includes(searchTerm) ||
+                    address.includes(searchTerm);
+
+
+                const matchesCategory =
+                    selectedCategory === "all" ||
+                    category ===
+                    normalizeCategory(selectedCategory);
+
+
+                return (
+                    matchesSearch &&
+                    matchesCategory
+                );
+
+            });
+
+
+        businessGrid.innerHTML = "";
+
+
+        if (
+            filteredBusinesses.length === 0
+        ) {
+
+            if (businessEmpty) {
+                businessEmpty.style.display = "block";
+            }
+
+            return;
 
         }
 
-    });
+
+        if (businessEmpty) {
+            businessEmpty.style.display = "none";
+        }
+
+
+        filteredBusinesses.forEach(function (business) {
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "business-card";
+
+
+            const icon =
+                getCategoryIcon(
+                    business.category
+                );
+
+
+            const categoryLabel =
+                getCategoryLabel(
+                    business.category
+                );
+
+
+            card.innerHTML = `
+
+                <div class="business-card-icon">
+                    <i class="${icon}"></i>
+                </div>
+
+                <div class="business-card-content">
+
+                    <span class="business-card-category">
+                        ${escapeHTML(categoryLabel)}
+                    </span>
+
+                    <h3>
+                        ${escapeHTML(business.name)}
+                    </h3>
+
+                    <p class="business-card-location">
+                        <i class="fa-solid fa-location-dot"></i>
+                        ${escapeHTML(business.address)}
+                    </p>
+
+                    <p class="business-card-description">
+                        ${escapeHTML(
+                            business.description ||
+                            "Local business in Chhatarpur."
+                        )}
+                    </p>
+
+                    <button
+                        type="button"
+                        class="btn btn-primary business-details-btn"
+                        data-business-id="${escapeHTML(business.id)}"
+                    >
+                        View Details
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+            `;
+
+
+            businessGrid.appendChild(card);
+
+        });
+
+    }
+
+
+    // =====================================================
+    // OPEN BUSINESS FORM
+    // =====================================================
+
+    if (openBusinessForm) {
+
+        openBusinessForm.addEventListener(
+            "click",
+            function () {
+
+                if (!businessFormWrapper) return;
+
+
+                const isHidden =
+                    businessFormWrapper.style.display === "none" ||
+                    getComputedStyle(
+                        businessFormWrapper
+                    ).display === "none";
+
+
+                if (isHidden) {
+
+                    businessFormWrapper.style.display =
+                        "block";
+
+
+                    setTimeout(function () {
+
+                        businessFormWrapper.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }, 50);
+
+                } else {
+
+                    businessFormWrapper.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // CLOSE BUSINESS FORM
+    // =====================================================
+
+    if (closeBusinessForm) {
+
+        closeBusinessForm.addEventListener(
+            "click",
+            function () {
+
+                if (!businessFormWrapper) return;
+
+                businessFormWrapper.style.display =
+                    "none";
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // SUBMIT BUSINESS
+    // =====================================================
+
+    if (businessListingForm) {
+
+        businessListingForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    document.getElementById(
+                        "businessName"
+                    )?.value.trim();
+
+
+                const category =
+                    document.getElementById(
+                        "businessFormCategory"
+                    )?.value;
+
+
+                const owner =
+                    document.getElementById(
+                        "ownerName"
+                    )?.value.trim();
+
+
+                const phone =
+                    document.getElementById(
+                        "businessPhone"
+                    )?.value.trim();
+
+
+                const whatsapp =
+                    document.getElementById(
+                        "businessWhatsapp"
+                    )?.value.trim();
+
+
+                const maps =
+                    document.getElementById(
+                        "businessMaps"
+                    )?.value.trim();
+
+
+                const website =
+                    document.getElementById(
+                        "businessWebsite"
+                    )?.value.trim();
+
+
+                const instagram =
+                    document.getElementById(
+                        "businessInstagram"
+                    )?.value.trim();
+
+
+                const address =
+                    document.getElementById(
+                        "businessAddress"
+                    )?.value.trim();
+
+
+                const description =
+                    document.getElementById(
+                        "businessDescription"
+                    )?.value.trim();
+
+
+                if (!name || !category || !phone || !address) {
+
+                    showToast(
+                        "Please fill all required fields."
+                    );
+
+                    return;
+
+                }
+
+
+                const newBusiness = {
+
+                    id: createBusinessId(),
+
+                    name: name,
+
+                    category: category,
+
+                    owner: owner,
+
+                    phone: phone,
+
+                    whatsapp: whatsapp,
+
+                    maps: maps,
+
+                    website: website,
+
+                    instagram: instagram,
+
+                    address: address,
+
+                    description: description,
+
+                    createdAt:
+                        new Date().toISOString()
+
+                };
+
+
+                const businesses =
+                    getBusinesses();
+
+
+                businesses.unshift(
+                    newBusiness
+                );
+
+
+                const saved =
+                    saveBusinesses(
+                        businesses
+                    );
+
+
+                if (!saved) {
+
+                    showToast(
+                        "Business could not be saved."
+                    );
+
+                    return;
+
+                }
+
+
+                businessListingForm.reset();
+
+
+                if (businessFormWrapper) {
+
+                    businessFormWrapper.style.display =
+                        "none";
+
+                }
+
+
+                renderBusinesses();
+
+
+                showToast(
+                    "Business added successfully!"
+                );
+
+
+                setTimeout(function () {
+
+                    if (businessGrid) {
+
+                        businessGrid.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
+
+                }, 300);
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // BUSINESS SEARCH
+    // =====================================================
+
+    if (businessSearch) {
+
+        businessSearch.addEventListener(
+            "input",
+            renderBusinesses
+        );
+
+    }
+
+
+    // =====================================================
+    // BUSINESS CATEGORY FILTER
+    // =====================================================
+
+    if (businessCategory) {
+
+        businessCategory.addEventListener(
+            "change",
+            renderBusinesses
+        );
+
+    }
+
+
+    // =====================================================
+    // OPEN BUSINESS DETAILS
+    // =====================================================
+
+    function openBusinessDetails(business) {
+
+        if (!businessModal || !business) {
+            return;
+        }
+
+
+        if (businessModalIcon) {
+
+            businessModalIcon.innerHTML =
+                `<i class="${getCategoryIcon(
+                    business.category
+                )}"></i>`;
+
+        }
+
+
+        if (businessModalCategory) {
+
+            businessModalCategory.textContent =
+                getCategoryLabel(
+                    business.category
+                );
+
+        }
+
+
+        if (businessModalTitle) {
+
+            businessModalTitle.textContent =
+                business.name || "Business";
+
+        }
+
+
+        if (businessModalLocation) {
+
+            businessModalLocation.innerHTML =
+                `
+                <i class="fa-solid fa-location-dot"></i>
+                ${escapeHTML(
+                    business.address || ""
+                )}
+                `;
+
+        }
+
+
+        if (businessModalDescription) {
+
+            businessModalDescription.textContent =
+                business.description ||
+                "Local business in Chhatarpur.";
+
+        }
+
+
+        if (businessModalActions) {
+
+            businessModalActions.innerHTML = "";
+
+
+            // CALL
+            if (business.phone) {
+
+                const callLink =
+                    document.createElement("a");
+
+                callLink.className =
+                    "btn btn-primary";
+
+                callLink.href =
+                    "tel:" +
+                    normalizePhone(
+                        business.phone
+                    );
+
+                callLink.innerHTML =
+                    `
+                    <i class="fa-solid fa-phone"></i>
+                    Call
+                    `;
+
+                businessModalActions.appendChild(
+                    callLink
+                );
+
+            }
+
+
+            // WHATSAPP
+            if (business.whatsapp || business.phone) {
+
+                const whatsappNumber =
+                    normalizeWhatsApp(
+                        business.whatsapp ||
+                        business.phone
+                    );
+
+
+                if (whatsappNumber) {
+
+                    const whatsappLink =
+                        document.createElement("a");
+
+                    whatsappLink.className =
+                        "btn btn-primary";
+
+                    whatsappLink.href =
+                        "https://wa.me/" +
+                        whatsappNumber;
+
+                    whatsappLink.target = "_blank";
+
+                    whatsappLink.rel =
+                        "noopener noreferrer";
+
+                    whatsappLink.innerHTML =
+                        `
+                        <i class="fa-brands fa-whatsapp"></i>
+                        WhatsApp
+                        `;
+
+                    businessModalActions.appendChild(
+                        whatsappLink
+                    );
+
+                }
+
+            }
+
+
+            // GOOGLE MAPS
+            if (business.maps) {
+
+                const mapsLink =
+                    document.createElement("a");
+
+                mapsLink.className =
+                    "btn btn-primary";
+
+                mapsLink.href =
+                    business.maps;
+
+                mapsLink.target = "_blank";
+
+                mapsLink.rel =
+                    "noopener noreferrer";
+
+                mapsLink.innerHTML =
+                    `
+                    <i class="fa-solid fa-location-arrow"></i>
+                    Directions
+                    `;
+
+                businessModalActions.appendChild(
+                    mapsLink
+                );
+
+            }
+
+
+            // WEBSITE
+            if (business.website) {
+
+                const websiteLink =
+                    document.createElement("a");
+
+                websiteLink.className =
+                    "btn btn-primary";
+
+                websiteLink.href =
+                    business.website;
+
+                websiteLink.target = "_blank";
+
+                websiteLink.rel =
+                    "noopener noreferrer";
+
+                websiteLink.innerHTML =
+                    `
+                    <i class="fa-solid fa-globe"></i>
+                    Website
+                    `;
+
+                businessModalActions.appendChild(
+                    websiteLink
+                );
+
+            }
+
+
+            // INSTAGRAM
+            if (business.instagram) {
+
+                const instagramLink =
+                    document.createElement("a");
+
+                instagramLink.className =
+                    "btn btn-primary";
+
+                instagramLink.href =
+                    business.instagram;
+
+                instagramLink.target = "_blank";
+
+                instagramLink.rel =
+                    "noopener noreferrer";
+
+                instagramLink.innerHTML =
+                    `
+                    <i class="fa-brands fa-instagram"></i>
+                    Instagram
+                    `;
+
+                businessModalActions.appendChild(
+                    instagramLink
+                );
+
+            }
+
+        }
+
+
+        businessModal.classList.add("active");
+
+        document.body.classList.add("modal-open");
+
+    }
+
+
+    // =====================================================
+    // CLOSE BUSINESS MODAL
+    // =====================================================
+
+    function closeBusinessModal() {
+
+        if (!businessModal) return;
+
+        businessModal.classList.remove("active");
+
+        document.body.classList.remove("modal-open");
+
+    }
+
+
+    if (businessModalClose) {
+
+        businessModalClose.addEventListener(
+            "click",
+            closeBusinessModal
+        );
+
+    }
+
+
+    if (businessModalOverlay) {
+
+        businessModalOverlay.addEventListener(
+            "click",
+            closeBusinessModal
+        );
+
+    }
+
+
+    // =====================================================
+    // BUSINESS DETAILS BUTTON
+    // EVENT DELEGATION
+    // =====================================================
+
+    if (businessGrid) {
+
+        businessGrid.addEventListener(
+            "click",
+            function (event) {
+
+                const button =
+                    event.target.closest(
+                        ".business-details-btn"
+                    );
+
+
+                if (!button) return;
+
+
+                const businessId =
+                    button.getAttribute(
+                        "data-business-id"
+                    );
+
+
+                const businesses =
+                    getBusinesses();
+
+
+                const business =
+                    businesses.find(
+                        function (item) {
+
+                            return String(item.id) ===
+                                String(businessId);
+
+                        }
+                    );
+
+
+                if (business) {
+
+                    openBusinessDetails(
+                        business
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // INITIAL BUSINESS RENDER
+    // =====================================================
+
+    renderBusinesses();
+
+
+    // =====================================================
+    // ESCAPE KEY
+    // =====================================================
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key !== "Escape") {
+                return;
+            }
+
+            closeMobileMenu();
+
+            closeServiceModal();
+
+            closeBusinessModal();
+
+        }
+    );
 
 
     // =====================================================
@@ -711,6 +1647,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "(prefers-reduced-motion: reduce)"
         );
 
+
     if (prefersReducedMotion.matches) {
 
         document.documentElement.style.scrollBehavior =
@@ -719,10 +1656,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // =====================================================
-    // FINAL MESSAGE
-    // =====================================================
-
     console.log(
         "Aashish Digital website loaded successfully."
     );
@@ -730,40 +1663,82 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
-
-/* =================================
-   CLIENTS SLIDER
-================================= */
+// =====================================================
+// CLIENTS SLIDER
+// =====================================================
 
 (function () {
 
-    const slider = document.querySelector(".clients-slider");
+    const slider =
+        document.querySelector(
+            ".clients-slider"
+        );
+
 
     if (!slider) return;
 
-    const viewport = slider.querySelector(".clients-viewport");
-    const track = slider.querySelector(".clients-track");
-    const slides = Array.from(slider.querySelectorAll(".client-slide"));
-    const prevButton = slider.querySelector(".clients-prev");
-    const nextButton = slider.querySelector(".clients-next");
-    const dotsContainer = document.querySelector(".clients-dots");
 
-    if (!track || !slides.length) return;
+    const viewport =
+        slider.querySelector(
+            ".clients-viewport"
+        );
+
+
+    const track =
+        slider.querySelector(
+            ".clients-track"
+        );
+
+
+    const slides =
+        Array.from(
+            slider.querySelectorAll(
+                ".client-slide"
+            )
+        );
+
+
+    const prevButton =
+        slider.querySelector(
+            ".clients-prev"
+        );
+
+
+    const nextButton =
+        slider.querySelector(
+            ".clients-next"
+        );
+
+
+    const dotsContainer =
+        document.querySelector(
+            ".clients-dots"
+        );
+
+
+    if (
+        !viewport ||
+        !track ||
+        !slides.length
+    ) {
+        return;
+    }
 
 
     let currentIndex = 0;
+
     let slidesPerView = 3;
-    let autoSlideTimer;
+
+    let autoSlideTimer = null;
 
     let touchStartX = 0;
+
     let touchEndX = 0;
 
 
-    /* ================================
-       GET SLIDES PER VIEW
-    ================================= */
+    // =====================================================
+    // SLIDES PER VIEW
+    // =====================================================
 
     function getSlidesPerView() {
 
@@ -776,150 +1751,201 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         return 3;
+
     }
 
 
-    /* ================================
-       TOTAL PAGES
-    ================================= */
+    // =====================================================
+    // TOTAL PAGES
+    // =====================================================
 
     function getTotalPages() {
 
-        slidesPerView = getSlidesPerView();
+        slidesPerView =
+            getSlidesPerView();
+
 
         return Math.max(
             1,
-            Math.ceil(slides.length / slidesPerView)
+            Math.ceil(
+                slides.length /
+                slidesPerView
+            )
         );
+
     }
 
 
-    /* ================================
-       CREATE DOTS
-    ================================= */
+    // =====================================================
+    // CREATE DOTS
+    // =====================================================
 
     function createDots() {
 
         if (!dotsContainer) return;
 
+
         dotsContainer.innerHTML = "";
 
-        const totalPages = getTotalPages();
 
-        for (let i = 0; i < totalPages; i++) {
+        const totalPages =
+            getTotalPages();
 
-            const dot = document.createElement("button");
 
-            dot.className = "clients-dot";
+        for (
+            let i = 0;
+            i < totalPages;
+            i++
+        ) {
+
+            const dot =
+                document.createElement(
+                    "button"
+                );
+
 
             dot.type = "button";
 
+            dot.className =
+                "clients-dot";
+
+
             dot.setAttribute(
                 "aria-label",
-                "Go to client slide " + (i + 1)
+                "Go to client slide " +
+                (i + 1)
             );
 
-            dot.addEventListener("click", function () {
 
-                goToSlide(i);
+            dot.addEventListener(
+                "click",
+                function () {
 
-                restartAutoSlide();
+                    goToSlide(i);
 
-            });
+                    restartAutoSlide();
 
-            dotsContainer.appendChild(dot);
+                }
+            );
+
+
+            dotsContainer.appendChild(
+                dot
+            );
+
         }
 
     }
 
 
-    /* ================================
-       UPDATE DOTS
-    ================================= */
+    // =====================================================
+    // UPDATE DOTS
+    // =====================================================
 
     function updateDots() {
 
         if (!dotsContainer) return;
 
+
         const dots =
-            dotsContainer.querySelectorAll(".clients-dot");
-
-        dots.forEach(function (dot, index) {
-
-            dot.classList.toggle(
-                "active",
-                index === currentIndex
+            dotsContainer.querySelectorAll(
+                ".clients-dot"
             );
 
-        });
+
+        dots.forEach(
+            function (dot, index) {
+
+                dot.classList.toggle(
+                    "active",
+                    index === currentIndex
+                );
+
+            }
+        );
 
     }
 
 
-    /* ================================
-       GO TO SLIDE
-    ================================= */
+    // =====================================================
+    // GO TO SLIDE
+    // =====================================================
 
     function goToSlide(index) {
 
-        const totalPages = getTotalPages();
+        const totalPages =
+            getTotalPages();
+
 
         if (index < 0) {
             index = totalPages - 1;
         }
 
+
         if (index >= totalPages) {
             index = 0;
         }
 
+
         currentIndex = index;
 
+
         const percentage =
-            currentIndex * (100 / slidesPerView);
+            currentIndex *
+            (100 / slidesPerView);
+
 
         track.style.transform =
-            "translateX(-" + percentage + "%)";
+            "translateX(-" +
+            percentage +
+            "%)";
+
 
         updateDots();
 
     }
 
 
-    /* ================================
-       NEXT
-    ================================= */
+    // =====================================================
+    // NEXT / PREVIOUS
+    // =====================================================
 
     function nextSlide() {
 
-        goToSlide(currentIndex + 1);
+        goToSlide(
+            currentIndex + 1
+        );
 
     }
 
-
-    /* ================================
-       PREVIOUS
-    ================================= */
 
     function previousSlide() {
 
-        goToSlide(currentIndex - 1);
+        goToSlide(
+            currentIndex - 1
+        );
 
     }
 
 
-    /* ================================
-       AUTO SLIDE
-    ================================= */
+    // =====================================================
+    // AUTO SLIDE
+    // =====================================================
 
     function startAutoSlide() {
 
         stopAutoSlide();
 
-        autoSlideTimer = setInterval(function () {
 
-            nextSlide();
+        autoSlideTimer =
+            setInterval(
+                function () {
 
-        }, 5000);
+                    nextSlide();
+
+                },
+                5000
+            );
 
     }
 
@@ -928,7 +1954,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (autoSlideTimer) {
 
-            clearInterval(autoSlideTimer);
+            clearInterval(
+                autoSlideTimer
+            );
 
             autoSlideTimer = null;
 
@@ -944,9 +1972,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ================================
-       ARROWS
-    ================================= */
+    // =====================================================
+    // NEXT BUTTON
+    // =====================================================
 
     if (nextButton) {
 
@@ -964,6 +1992,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    // =====================================================
+    // PREVIOUS BUTTON
+    // =====================================================
+
     if (prevButton) {
 
         prevButton.addEventListener(
@@ -980,9 +2012,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ================================
-       TOUCH SWIPE
-    ================================= */
+    // =====================================================
+    // TOUCH SWIPE
+    // =====================================================
 
     viewport.addEventListener(
         "touchstart",
@@ -994,7 +2026,9 @@ document.addEventListener("DOMContentLoaded", function () {
             stopAutoSlide();
 
         },
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
 
@@ -1010,16 +2044,22 @@ document.addEventListener("DOMContentLoaded", function () {
             startAutoSlide();
 
         },
-        { passive: true }
+        {
+            passive: true
+        }
     );
 
 
     function handleSwipe() {
 
         const swipeDistance =
-            touchEndX - touchStartX;
+            touchEndX -
+            touchStartX;
 
-        const minimumSwipeDistance = 50;
+
+        const minimumSwipeDistance =
+            50;
+
 
         if (
             Math.abs(swipeDistance) <
@@ -1027,6 +2067,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
             return;
         }
+
 
         if (swipeDistance < 0) {
 
@@ -1041,14 +2082,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ================================
-       PAUSE ON HOVER
-    ================================= */
+    // =====================================================
+    // PAUSE ON HOVER
+    // =====================================================
 
     slider.addEventListener(
         "mouseenter",
         stopAutoSlide
     );
+
 
     slider.addEventListener(
         "mouseleave",
@@ -1056,65 +2098,80 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 
-    /* ================================
-       RESIZE
-    ================================= */
+    // =====================================================
+    // RESIZE
+    // =====================================================
 
-    let resizeTimer;
+    let resizeTimer = null;
+
 
     window.addEventListener(
         "resize",
         function () {
 
-            clearTimeout(resizeTimer);
+            clearTimeout(
+                resizeTimer
+            );
 
-            resizeTimer = setTimeout(function () {
 
-                const oldSlidesPerView =
-                    slidesPerView;
+            resizeTimer =
+                setTimeout(
+                    function () {
 
-                const newSlidesPerView =
-                    getSlidesPerView();
+                        const newSlidesPerView =
+                            getSlidesPerView();
 
-                if (
-                    oldSlidesPerView !==
-                    newSlidesPerView
-                ) {
 
-                    slidesPerView =
-                        newSlidesPerView;
+                        if (
+                            slidesPerView !==
+                            newSlidesPerView
+                        ) {
 
-                    createDots();
+                            slidesPerView =
+                                newSlidesPerView;
 
-                    const totalPages =
-                        getTotalPages();
 
-                    if (
-                        currentIndex >=
-                        totalPages
-                    ) {
-                        currentIndex =
-                            totalPages - 1;
-                    }
+                            createDots();
 
-                }
 
-                goToSlide(currentIndex);
+                            const totalPages =
+                                getTotalPages();
 
-            }, 150);
+
+                            if (
+                                currentIndex >=
+                                totalPages
+                            ) {
+
+                                currentIndex =
+                                    totalPages - 1;
+
+                            }
+
+                        }
+
+
+                        goToSlide(
+                            currentIndex
+                        );
+
+                    },
+                    150
+                );
 
         }
     );
 
 
-    /* ================================
-       INITIALIZE
-    ================================= */
+    // =====================================================
+    // INITIALIZE
+    // =====================================================
 
     createDots();
 
     goToSlide(0);
 
     startAutoSlide();
+
 
 })();
