@@ -13,7 +13,7 @@ const SUPABASE_URL =
     "https://cgobnlyjyfjbjzcepuyp.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "YOUR_EXISTING_SUPABASE_ANON_KEY";
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnb2JubHlqeWZqYmp6Y2VwdXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTcyMDAsImV4cCI6MjEwNTY3MzIwMH0.KnOWmm_SDFaO9U6vjlg4-gWmv22fDVFzJmcDt7_vFOY";
 
 
 /* =========================================================
