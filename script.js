@@ -1,23 +1,23 @@
 /* =========================================================
-   09ZERO WEBSITE - SCRIPT.JS
+   09ZERO - SCRIPT.JS
 ========================================================= */
 
 console.log("09ZERO JS LOADED");
 
 
 /* =========================================================
-   SUPABASE CONFIG
+   SUPABASE CONFIGURATION
 ========================================================= */
 
 const SUPABASE_URL =
     "https://cgobnlyjyfjbjzcepuyp.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnb2JubHlqeWZqYmp6Y2VwdXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTcyMDAsImV4cCI6MjEwNTY3MzIwMH0.KnOWmm_SDFaO9U6vjlg4-gWmv22fDVFzJmcDt7_vFOY";
+    "YOUR_EXISTING_SUPABASE_ANON_KEY";
 
 
 /* =========================================================
-   CHECK SUPABASE KEY
+   SUPABASE KEY CHECK
 ========================================================= */
 
 try {
@@ -73,6 +73,7 @@ document.addEventListener(
             );
 
             return;
+
         }
 
 
@@ -88,38 +89,62 @@ document.addEventListener(
 
 
                 /* =========================================
-                   GET VALUES
+                   GET FORM FIELDS
                 ========================================= */
 
                 const name =
                     document
-                        .getElementById("name")
+                        .getElementById(
+                            "contactName"
+                        )
                         ?.value
                         .trim() || "";
+
 
                 const email =
                     document
-                        .getElementById("email")
+                        .getElementById(
+                            "contactEmail"
+                        )
                         ?.value
                         .trim() || "";
+
 
                 const phone =
                     document
-                        .getElementById("phone")
+                        .getElementById(
+                            "contactPhone"
+                        )
                         ?.value
                         .trim() || "";
+
 
                 const service =
                     document
-                        .getElementById("service")
+                        .getElementById(
+                            "contactService"
+                        )
                         ?.value
                         .trim() || "";
 
+
                 const message =
                     document
-                        .getElementById("message")
+                        .getElementById(
+                            "contactMessage"
+                        )
                         ?.value
                         .trim() || "";
+
+
+                /* =========================================
+                   STATUS ELEMENT
+                ========================================= */
+
+                const formStatus =
+                    document.getElementById(
+                        "contactFormStatus"
+                    );
 
 
                 /* =========================================
@@ -128,46 +153,62 @@ document.addEventListener(
 
                 if (!name) {
 
-                    alert(
-                        "Please enter your name."
-                    );
+                    if (formStatus) {
+
+                        formStatus.textContent =
+                            "Please enter your name.";
+
+                    }
 
                     return;
+
                 }
 
 
                 if (!phone) {
 
-                    alert(
-                        "Please enter your phone number."
-                    );
+                    if (formStatus) {
+
+                        formStatus.textContent =
+                            "Please enter your phone number.";
+
+                    }
 
                     return;
+
                 }
 
 
                 if (!service) {
 
-                    alert(
-                        "Please select a service."
-                    );
+                    if (formStatus) {
+
+                        formStatus.textContent =
+                            "Please select a service.";
+
+                    }
 
                     return;
+
                 }
 
 
                 if (!message) {
 
-                    alert(
-                        "Please enter your message."
-                    );
+                    if (formStatus) {
+
+                        formStatus.textContent =
+                            "Please enter your project details.";
+
+                    }
 
                     return;
+
                 }
 
 
                 /* =========================================
-                   LEAD DATA
+                   SUPABASE LEAD DATA
                 ========================================= */
 
                 const payload = {
@@ -191,7 +232,7 @@ document.addEventListener(
 
 
                 /* =========================================
-                   DEBUG
+                   DEBUG LOG
                 ========================================= */
 
                 console.log(
@@ -207,30 +248,6 @@ document.addEventListener(
                     SUPABASE_URL
                 );
 
-                try {
-
-                    const jwtPayload =
-                        JSON.parse(
-                            atob(
-                                SUPABASE_ANON_KEY
-                                    .split(".")[1]
-                            )
-                        );
-
-                    console.log(
-                        "SUPABASE ROLE:",
-                        jwtPayload.role
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "JWT ERROR:",
-                        error
-                    );
-
-                }
-
                 console.log(
                     "LEAD PAYLOAD:",
                     payload
@@ -238,13 +255,19 @@ document.addEventListener(
 
 
                 /* =========================================
-                   BUTTON
+                   SUBMIT BUTTON
                 ========================================= */
 
                 const submitButton =
-                    contactForm.querySelector(
-                        'button[type="submit"]'
+                    document.getElementById(
+                        "contactSubmitBtn"
                     );
+
+
+                const originalButtonHTML =
+                    submitButton
+                        ? submitButton.innerHTML
+                        : "";
 
 
                 if (submitButton) {
@@ -252,17 +275,22 @@ document.addEventListener(
                     submitButton.disabled =
                         true;
 
-                    submitButton.dataset.oldText =
-                        submitButton.innerText;
+                    submitButton.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
 
-                    submitButton.innerText =
-                        "Sending...";
+                }
+
+
+                if (formStatus) {
+
+                    formStatus.textContent =
+                        "Sending your enquiry...";
 
                 }
 
 
                 /* =========================================
-                   SUPABASE INSERT
+                   INSERT LEAD INTO SUPABASE
                 ========================================= */
 
                 try {
@@ -300,7 +328,7 @@ document.addEventListener(
 
 
                     /* =====================================
-                       READ RESPONSE
+                       READ SUPABASE RESPONSE
                     ===================================== */
 
                     const responseText =
@@ -312,6 +340,7 @@ document.addEventListener(
                         response.status
                     );
 
+
                     console.log(
                         "SUPABASE RESPONSE:",
                         responseText
@@ -319,7 +348,7 @@ document.addEventListener(
 
 
                     /* =====================================
-                       ERROR
+                       CHECK ERROR
                     ===================================== */
 
                     if (!response.ok) {
@@ -345,10 +374,20 @@ document.addEventListener(
                     );
 
 
+                    if (formStatus) {
+
+                        formStatus.textContent =
+                            "Your enquiry has been submitted successfully.";
+
+                    }
+
+
                     alert(
                         "Thank you! Your enquiry has been submitted successfully."
                     );
 
+
+                    /* Clear form */
 
                     contactForm.reset();
 
@@ -361,27 +400,32 @@ document.addEventListener(
                     );
 
 
-                    alert(
-                        "Something went wrong. Please try again."
-                    );
+                    if (formStatus) {
 
-                } finally {
-
-
-                    /* =====================================
-                       RESTORE BUTTON
-                    ===================================== */
-
-                    if (submitButton) {
-
-                        submitButton.disabled =
-                            false;
-
-                        submitButton.innerText =
-                            submitButton.dataset.oldText ||
-                            "Send Message";
+                        formStatus.textContent =
+                            "Unable to submit your enquiry. Please try again.";
 
                     }
+
+
+                    alert(
+                        "Something went wrong while sending your enquiry. Please try again."
+                    );
+
+                }
+
+
+                /* =========================================
+                   RESTORE BUTTON
+                ========================================= */
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.innerHTML =
+                        originalButtonHTML;
 
                 }
 
