@@ -1051,6 +1051,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     // SEND DATA TO SUPABASE
                     // -------------------------------------------------
 
+
+                    console.log(
+    "SUPABASE KEY ROLE:",
+    JSON.parse(
+        atob(
+            SUPABASE_ANON_KEY.split(".")[1]
+        )
+    ).role
+);
+
                     const response =
                         await fetch(
                             `${SUPABASE_URL}/rest/v1/leads`,
