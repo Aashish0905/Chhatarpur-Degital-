@@ -1078,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 body:
                                     JSON.stringify({
 
-                                        Name:
+                                        name:
                                             name,
 
                                         email:
