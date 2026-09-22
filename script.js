@@ -4,43 +4,26 @@
 
 console.log("09ZERO JS LOADED");
 
-
-/* =========================================================
-   SUPABASE CONFIGURATION
-========================================================= */
-
 const SUPABASE_URL =
     "https://cgobnlyjyfjbjzcepuyp.supabase.co";
 
 const SUPABASE_ANON_KEY =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnb2JubHlqeWZqYmp6Y2VwdXlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwOTcyMDAsImV4cCI6MjEwNTY3MzIwMH0.KnOWmm_SDFaO9U6vjlg4-gWmv22fDVFzJmcDt7_vFOY";
+    "sb_publishable_BrvR9X1cfClkFW0t4Zqpzw_OvYGtSbt";
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        console.log(
+            "09ZERO website loaded successfully."
+        );
+
+        // Your contact form code continues here...
+
+    }
+);
 
 
-/* =========================================================
-   SUPABASE KEY CHECK
-========================================================= */
-
-try {
-
-    const jwtPayload = JSON.parse(
-        atob(
-            SUPABASE_ANON_KEY.split(".")[1]
-        )
-    );
-
-    console.log(
-        "SUPABASE KEY ROLE:",
-        jwtPayload.role
-    );
-
-} catch (error) {
-
-    console.error(
-        "SUPABASE KEY CHECK ERROR:",
-        error
-    );
-
-}
 
 
 /* =========================================================
