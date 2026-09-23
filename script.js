@@ -1,8 +1,9 @@
-
 /* =========================================================
    09ZERO - SCRIPT.JS
    Contact Form + Visitor Tracking
 ========================================================= */
+
+"use strict";
 
 console.log("09ZERO JS LOADED");
 
@@ -19,6 +20,56 @@ const SUPABASE_ANON_KEY =
 
 
 /* =========================================================
+   SUPABASE CLIENT
+========================================================= */
+
+let supabaseClient = null;
+
+
+function initializeSupabase() {
+
+    if (!window.supabase) {
+
+        console.error(
+            "09ZERO Supabase library not loaded."
+        );
+
+        return false;
+
+    }
+
+
+    try {
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+
+        console.log(
+            "09ZERO Supabase client initialized successfully."
+        );
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "09ZERO Supabase initialization failed:",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
    HELPER - CREATE RANDOM ID
 ========================================================= */
 
@@ -26,12 +77,13 @@ function createRandomId(prefix = "") {
 
     if (
         window.crypto &&
-        crypto.randomUUID
+        typeof window.crypto.randomUUID === "function"
     ) {
 
-        return prefix + crypto.randomUUID();
+        return prefix + window.crypto.randomUUID();
 
     }
+
 
     return (
         prefix +
@@ -46,13 +98,13 @@ function createRandomId(prefix = "") {
 
 /* =========================================================
    VISITOR ID
-   Stable ID for the same browser
 ========================================================= */
 
 function getVisitorId() {
 
     const storageKey =
         "09zero_visitor_id";
+
 
     let visitorId =
         localStorage.getItem(storageKey);
@@ -78,13 +130,13 @@ function getVisitorId() {
 
 /* =========================================================
    SESSION ID
-   New session for the current browser session
 ========================================================= */
 
 function getSessionId() {
 
     const storageKey =
         "09zero_session_id";
+
 
     let sessionId =
         sessionStorage.getItem(storageKey);
@@ -167,7 +219,7 @@ function getDeviceName() {
 
 
 /* =========================================================
-   BROWSER DETECTION
+   BROWSER
 ========================================================= */
 
 function getBrowser() {
@@ -176,18 +228,14 @@ function getBrowser() {
         navigator.userAgent;
 
 
-    if (
-        /Edg\//i.test(userAgent)
-    ) {
+    if (/Edg\//i.test(userAgent)) {
 
         return "Microsoft Edge";
 
     }
 
 
-    if (
-        /OPR\//i.test(userAgent)
-    ) {
+    if (/OPR\//i.test(userAgent)) {
 
         return "Opera";
 
@@ -204,9 +252,7 @@ function getBrowser() {
     }
 
 
-    if (
-        /Firefox\//i.test(userAgent)
-    ) {
+    if (/Firefox\//i.test(userAgent)) {
 
         return "Mozilla Firefox";
 
@@ -300,20 +346,12 @@ function getTrafficSource() {
         document.referrer || "";
 
 
-    /* -----------------------------------------
-       UTM SOURCE
-    ----------------------------------------- */
-
     if (utmSource) {
 
         return utmSource;
 
     }
 
-
-    /* -----------------------------------------
-       NO REFERRER = DIRECT
-    ----------------------------------------- */
 
     if (!referrer) {
 
@@ -322,35 +360,19 @@ function getTrafficSource() {
     }
 
 
-    /* -----------------------------------------
-       GOOGLE
-    ----------------------------------------- */
-
-    if (
-        /google\./i.test(referrer)
-    ) {
+    if (/google\./i.test(referrer)) {
 
         return "Google";
 
     }
 
 
-    /* -----------------------------------------
-       BING
-    ----------------------------------------- */
-
-    if (
-        /bing\./i.test(referrer)
-    ) {
+    if (/bing\./i.test(referrer)) {
 
         return "Bing";
 
     }
 
-
-    /* -----------------------------------------
-       FACEBOOK
-    ----------------------------------------- */
 
     if (
         /facebook\.com/i.test(referrer) ||
@@ -362,35 +384,19 @@ function getTrafficSource() {
     }
 
 
-    /* -----------------------------------------
-       INSTAGRAM
-    ----------------------------------------- */
-
-    if (
-        /instagram\.com/i.test(referrer)
-    ) {
+    if (/instagram\.com/i.test(referrer)) {
 
         return "Instagram";
 
     }
 
 
-    /* -----------------------------------------
-       LINKEDIN
-    ----------------------------------------- */
-
-    if (
-        /linkedin\.com/i.test(referrer)
-    ) {
+    if (/linkedin\.com/i.test(referrer)) {
 
         return "LinkedIn";
 
     }
 
-
-    /* -----------------------------------------
-       YOUTUBE
-    ----------------------------------------- */
 
     if (
         /youtube\.com/i.test(referrer) ||
@@ -402,10 +408,6 @@ function getTrafficSource() {
     }
 
 
-    /* -----------------------------------------
-       X / TWITTER
-    ----------------------------------------- */
-
     if (
         /twitter\.com/i.test(referrer) ||
         /x\.com/i.test(referrer)
@@ -416,22 +418,16 @@ function getTrafficSource() {
     }
 
 
-    /* -----------------------------------------
-       OTHER REFERRAL
-    ----------------------------------------- */
-
     return "Referral";
 
 }
 
 
 /* =========================================================
-   GET URL PARAMETER
+   URL PARAMETER
 ========================================================= */
 
-function getUrlParameter(
-    parameter
-) {
+function getUrlParameter(parameter) {
 
     const params =
         new URLSearchParams(
@@ -447,34 +443,22 @@ function getUrlParameter(
 
 
 /* =========================================================
-   VISITOR DATA
+   VISITOR PAYLOAD
 ========================================================= */
 
 function createVisitorPayload() {
-
-    const visitorId =
-        getVisitorId();
-
-
-    const sessionId =
-        getSessionId();
-
-
-    const referrer =
-        document.referrer || null;
-
 
     const trafficSource =
         getTrafficSource();
 
 
-    const payload = {
+    return {
 
         visitor_id:
-            visitorId,
+            getVisitorId(),
 
         session_id:
-            sessionId,
+            getSessionId(),
 
         page_path:
             window.location.pathname,
@@ -507,41 +491,43 @@ function createVisitorPayload() {
             trafficSource,
 
         referrer:
-            referrer,
+            document.referrer || null,
 
         utm_source:
-            getUrlParameter(
-                "utm_source"
-            ),
+            getUrlParameter("utm_source"),
 
         utm_medium:
-            getUrlParameter(
-                "utm_medium"
-            ),
+            getUrlParameter("utm_medium"),
 
         utm_campaign:
-            getUrlParameter(
-                "utm_campaign"
-            ),
+            getUrlParameter("utm_campaign"),
 
         ip_address:
             null
 
     };
 
-
-    return payload;
-
 }
 
 
 /* =========================================================
-   SAVE VISITOR TO SUPABASE
+   VISITOR TRACKING
 ========================================================= */
 
 async function trackVisitor() {
 
     try {
+
+        if (!supabaseClient) {
+
+            console.error(
+                "Visitor tracking stopped: Supabase client unavailable."
+            );
+
+            return;
+
+        }
+
 
         const visitorPayload =
             createVisitorPayload();
@@ -553,50 +539,22 @@ async function trackVisitor() {
         );
 
 
-        const response =
-            await fetch(
-                `${SUPABASE_URL}/rest/v1/visitors`,
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        "apikey":
-                            SUPABASE_ANON_KEY,
-
-                        "Authorization":
-                            `Bearer ${SUPABASE_ANON_KEY}`,
-
-                        "Prefer":
-                            "return=minimal"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            visitorPayload
-                        )
-
-                }
-            );
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("visitors")
+                .insert(
+                    visitorPayload
+                );
 
 
-        if (!response.ok) {
-
-            const errorText =
-                await response.text();
-
+        if (error) {
 
             console.error(
                 "Visitor tracking failed:",
-                response.status,
-                errorText
+                error
             );
-
 
             return;
 
@@ -648,10 +606,6 @@ function initializeContactForm() {
     );
 
 
-    /* =====================================================
-       FORM SUBMIT
-    ===================================================== */
-
     contactForm.addEventListener(
         "submit",
         async function (event) {
@@ -660,57 +614,43 @@ function initializeContactForm() {
 
 
             /* =============================================
-               GET FORM FIELDS
+               FORM FIELDS
             ============================================= */
 
             const name =
                 document
-                    .getElementById(
-                        "contactName"
-                    )
+                    .getElementById("contactName")
                     ?.value
                     .trim() || "";
 
 
             const email =
                 document
-                    .getElementById(
-                        "contactEmail"
-                    )
+                    .getElementById("contactEmail")
                     ?.value
                     .trim() || "";
 
 
             const phone =
                 document
-                    .getElementById(
-                        "contactPhone"
-                    )
+                    .getElementById("contactPhone")
                     ?.value
                     .trim() || "";
 
 
             const service =
                 document
-                    .getElementById(
-                        "contactService"
-                    )
+                    .getElementById("contactService")
                     ?.value
                     .trim() || "";
 
 
             const message =
                 document
-                    .getElementById(
-                        "contactMessage"
-                    )
+                    .getElementById("contactMessage")
                     ?.value
                     .trim() || "";
 
-
-            /* =============================================
-               STATUS
-            ============================================= */
 
             const formStatus =
                 document.getElementById(
@@ -793,6 +733,9 @@ function initializeContactForm() {
                 phone:
                     phone,
 
+                company:
+                    null,
+
                 service:
                     service,
 
@@ -816,17 +759,19 @@ function initializeContactForm() {
                 "09ZERO LEAD INSERT"
             );
 
-              console.log(
+            console.log(
                 "LEAD PAYLOAD:",
                 payload
             );
 
-           console.log(
-    "LEAD PAYLOAD JSON:",
-    JSON.stringify(payload, null, 2)
-);
-
-         
+            console.log(
+                "LEAD PAYLOAD JSON:",
+                JSON.stringify(
+                    payload,
+                    null,
+                    2
+                )
+            );
 
 
             /* =============================================
@@ -865,57 +810,107 @@ function initializeContactForm() {
 
 
             /* =============================================
+               SUPABASE CHECK
+            ============================================= */
+
+            if (!supabaseClient) {
+
+                console.error(
+                    "LEAD ERROR: Supabase client is not initialized."
+                );
+
+
+                if (formStatus) {
+
+                    formStatus.textContent =
+                        "Connection error. Please try again.";
+
+                }
+
+
+                if (submitButton) {
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.innerHTML =
+                        originalButtonHTML;
+
+                }
+
+                return;
+
+            }
+
+
+            /* =============================================
+               CHECK AUTH SESSION
+            ============================================= */
+
+            try {
+
+                const {
+                    data: sessionData,
+                    error: sessionError
+                } =
+                    await supabaseClient
+                        .auth
+                        .getSession();
+
+
+                console.log(
+                    "09ZERO AUTH SESSION:",
+                    sessionData
+                );
+
+
+                if (sessionError) {
+
+                    console.warn(
+                        "Auth session check warning:",
+                        sessionError
+                    );
+
+                }
+
+            } catch (authError) {
+
+                console.warn(
+                    "Auth session check failed:",
+                    authError
+                );
+
+            }
+
+
+            /* =============================================
                INSERT LEAD
             ============================================= */
 
             try {
 
-                const response =
-                    await fetch(
-                        `${SUPABASE_URL}/rest/v1/leads`,
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json",
-
-                                "apikey":
-                                    SUPABASE_ANON_KEY,
-
-                                "Authorization":
-                                    `Bearer ${SUPABASE_ANON_KEY}`,
-
-                                "Prefer":
-                                    "return=representation"
-
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    payload
-                                )
-
-                        }
-                    );
-
-
-                const responseText =
-                    await response.text();
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("leads")
+                        .insert(
+                            payload
+                        )
+                        .select()
+                        .single();
 
 
                 console.log(
-                    "SUPABASE LEAD STATUS:",
-                    response.status
+                    "SUPABASE LEAD DATA:",
+                    data
                 );
 
 
                 console.log(
-                    "SUPABASE LEAD RESPONSE:",
-                    responseText
+                    "SUPABASE LEAD ERROR:",
+                    error
                 );
 
 
@@ -923,12 +918,39 @@ function initializeContactForm() {
                    ERROR
                 ===================================== */
 
-                if (!response.ok) {
+                if (error) {
 
-                    throw new Error(
-                        responseText ||
-                        "Unable to save lead."
+                    console.error(
+                        "SUPABASE LEAD INSERT FAILED:",
+                        error
                     );
+
+
+                    console.error(
+                        "SUPABASE LEAD ERROR CODE:",
+                        error.code
+                    );
+
+
+                    console.error(
+                        "SUPABASE LEAD ERROR MESSAGE:",
+                        error.message
+                    );
+
+
+                    console.error(
+                        "SUPABASE LEAD ERROR DETAILS:",
+                        error.details
+                    );
+
+
+                    console.error(
+                        "SUPABASE LEAD ERROR HINT:",
+                        error.hint
+                    );
+
+
+                    throw error;
 
                 }
 
@@ -938,7 +960,20 @@ function initializeContactForm() {
                 ===================================== */
 
                 console.log(
+                    "================================="
+                );
+
+                console.log(
                     "LEAD SAVED SUCCESSFULLY"
+                );
+
+                console.log(
+                    "SAVED LEAD:",
+                    data
+                );
+
+                console.log(
+                    "================================="
                 );
 
 
@@ -1002,12 +1037,12 @@ function initializeContactForm() {
 
 
 /* =========================================================
-   DOM READY
+   WEBSITE INITIALIZATION
 ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
-    function () {
+    async function () {
 
         console.log(
             "================================="
@@ -1023,6 +1058,23 @@ document.addEventListener(
 
 
         /* =============================================
+           SUPABASE
+        ============================================= */
+
+        const supabaseReady =
+            initializeSupabase();
+
+
+        if (!supabaseReady) {
+
+            console.error(
+                "09ZERO WEBSITE: Supabase unavailable."
+            );
+
+        }
+
+
+        /* =============================================
            CONTACT FORM
         ============================================= */
 
@@ -1033,7 +1085,11 @@ document.addEventListener(
            VISITOR TRACKING
         ============================================= */
 
-        trackVisitor();
+        if (supabaseReady) {
+
+            await trackVisitor();
+
+        }
 
 
         console.log(
@@ -1042,4 +1098,3 @@ document.addEventListener(
 
     }
 );
-
