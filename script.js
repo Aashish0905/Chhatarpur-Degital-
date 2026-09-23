@@ -12,11 +12,13 @@ console.log("09ZERO JS LOADED");
    SUPABASE CONFIG
 ========================================================= */
 
-const SUPABASE_URL =
-    "https://cgobnlyjyfjbjzcepuyp.supabase.co";
+const SUPABASE_URL = "https://cgobnlyjyfjbjzcepuyp.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "YOUR_PUBLISHABLE_KEY_HERE";
 
-const SUPABASE_ANON_KEY =
-    "sb_publishable_BrvR9X1cfClkFW0t4Zqpzw_OvYGtSbt";
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+);
 
 
 /* =========================================================
