@@ -816,15 +816,17 @@ function initializeContactForm() {
                 "09ZERO LEAD INSERT"
             );
 
+              console.log(
+                "LEAD PAYLOAD:",
+                payload
+            );
+
            console.log(
     "LEAD PAYLOAD JSON:",
     JSON.stringify(payload, null, 2)
 );
 
-            // console.log(
-            //     "LEAD PAYLOAD:",
-            //     payload
-            // );
+         
 
 
             /* =============================================
